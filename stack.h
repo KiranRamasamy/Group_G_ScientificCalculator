@@ -10,7 +10,7 @@ typedef struct
 
 void stackInit(Stack *stack, int size);
 
-void stackPush(Stack *s, String);
+void stackPush(Stack *s, void*);
 
 void* stackPop(Stack *s);
 
@@ -20,7 +20,7 @@ void stackFree(Stack *s);
 
 int stackSize(Stack *s);
 
-void stackPush(Stack *s, String val)
+void stackPush(Stack *s, void* val)
 {
 	(s->top)++;
 	s->content[s->top] = val;
