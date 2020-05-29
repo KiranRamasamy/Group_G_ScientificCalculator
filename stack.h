@@ -1,3 +1,6 @@
+#include <stdio.h>
+#include <stdlib.h>
+
 typedef struct
 {
 	void **content;
@@ -5,16 +8,28 @@ typedef struct
 	int top;
 } Stack;
 
+void stackInit(Stack *stack, int size);
+
 void stackPush(Stack *s, String);
+
+void* stackTop(Stack *s);
 
 void stackFree(Stack *s);
 
-void stackInit(Stack *stack, int size);
+
 
 void stackPush(Stack *s, String val)
 {
 	(s->top)++;
 	s->content[s->top] = val;
+}
+
+void* stackTop(Stack *s)
+{
+	void *ret = NULL;
+	if(s->top >= 0 && s->content != NULL)
+		ret = s->content[s->top];
+	return ret;
 }
 
 
