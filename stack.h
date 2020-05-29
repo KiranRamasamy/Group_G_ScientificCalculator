@@ -12,6 +12,8 @@ void stackInit(Stack *stack, int size);
 
 void stackPush(Stack *s, String);
 
+void* stackPop(Stack *s);
+
 void* stackTop(Stack *s);
 
 void stackFree(Stack *s);
@@ -22,6 +24,14 @@ void stackPush(Stack *s, String val)
 {
 	(s->top)++;
 	s->content[s->top] = val;
+}
+
+void* stackPop(Stack *s)
+{
+	void *ret = NULL;
+	if(s->top >= 0 && s->content != NULL)
+		ret = s->content[(s->top)--];
+	return ret;
 }
 
 void* stackTop(Stack *s)
