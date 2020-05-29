@@ -5,8 +5,16 @@ typedef struct
 	int top;
 } Stack;
 
+void stackPush(Stack *s, String);
 
 void stackFree(Stack *s);
+
+void stackPush(Stack *s, String val)
+{
+	(s->top)++;
+	s->content[s->top] = val;
+}
+
 
 void stackFree(Stack *s)
 {
