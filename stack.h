@@ -9,6 +9,8 @@ void stackPush(Stack *s, String);
 
 void stackFree(Stack *s);
 
+void stackInit(Stack *stack, int size);
+
 void stackPush(Stack *s, String val)
 {
 	(s->top)++;
