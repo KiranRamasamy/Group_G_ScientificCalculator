@@ -16,7 +16,7 @@ void* stackTop(Stack *s);
 
 void stackFree(Stack *s);
 
-
+int stackSize(Stack *s);
 
 void stackPush(Stack *s, String val)
 {
@@ -32,7 +32,6 @@ void* stackTop(Stack *s)
 	return ret;
 }
 
-
 void stackFree(Stack *s)
 {
 	if (s->content)
@@ -40,4 +39,9 @@ void stackFree(Stack *s)
 	s->content = NULL;
 	s->size = 0;
 	s->top = -1;
+}
+
+int stackSize(Stack *s)
+{
+	return s->top + 1;
 }
