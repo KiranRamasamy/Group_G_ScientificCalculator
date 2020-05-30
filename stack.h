@@ -9,7 +9,13 @@ void stackPush(Stack *s, String);
 
 void stackFree(Stack *s);
 
-void stackInit(Stack *stack, int size);
+void stackInit(Stack *s, int size);
+{
+	s->content = malloc(size * sizeof(void*));
+	s->size = size;
+	s->top = -1;
+}
+
 
 void stackPush(Stack *s, String val)
 {
