@@ -1,6 +1,23 @@
 #include <stdio.h>
-
 #include <string.h>
+
+#define bool char
+
+struct Preferences
+{
+	struct Display
+	{
+		bool tokens;
+		bool postfix;
+	} display;
+	struct Mode
+	{
+		bool degrees;
+	} mode;
+	int precision;
+	int maxtokenlength;
+} prefs;
+
 
 char* getDataConsole(FILE* stream)
 {
