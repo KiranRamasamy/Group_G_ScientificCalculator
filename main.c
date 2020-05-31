@@ -47,20 +47,11 @@ char* getDataConsole(FILE* stream)
 
 
 int main()
-{
-		
-    
+{    
     
 
 	char* str = NULL;
 	
-
-	
-	
-
-   
-
-
 	str = getDataConsole(stdin);
 	printf("%s",str);
 

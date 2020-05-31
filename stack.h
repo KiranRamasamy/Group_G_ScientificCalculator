@@ -10,11 +10,13 @@ typedef struct
 
 void stackInit(Stack *s, int size);
 
-void stackPush(Stack *s, void*);
+void stackPush(Stack *s, void* val);
 
 void* stackPop(Stack *s);
 
 void* stackTop(Stack *s);
+
+int stackSize(Stack *s);
 
 void stackFree(Stack *s);
 
@@ -24,8 +26,6 @@ void stackInit(Stack *s, int size);
 	s->size = size;
 	s->top = -1;
 }
-
-int stackSize(Stack *s);
 
 void stackPush(Stack *s, void* val)
 {
