@@ -8,7 +8,7 @@ typedef struct
 	int top;
 } Stack;
 
-void stackInit(Stack *stack, int size);
+void stackInit(Stack *s, int size);
 
 void stackPush(Stack *s, void*);
 
