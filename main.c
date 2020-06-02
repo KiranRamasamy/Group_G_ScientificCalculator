@@ -227,7 +227,44 @@ bool ifIsSpecialVal(token tk)
 	return (strncmp(tk, "nan", 3) == 0 || strncmp(tk, "inf", 3) == 0);
 }
 
-
+Symbol typeOfToken(token tk)
+{
+	if (!tk)
+         {
+		return invalid;
+         }
+	Symbol ret = findType(*tk);
+	switch(ret)
+	{
+		case text:
+			if(ifIsFunc(tk))
+                         {
+				ret = function;
+                         }
+			else if(ifIsSpecialVal(tk))
+                         {
+				ret = value;
+                         }
+			else
+                         {
+				ret = identifier;
+                         }
+			break;
+		case addop:
+			if(*tk == '-' && strlen(tk) > 1)
+                          {
+				ret = typeOfToken(tk+1);
+                          }
+			break;
+		case decimal:
+		case digit:
+			ret = value;
+			break;
+		default:
+			break;
+	}
+	return ret;
+}
 
 int main()
 {    
