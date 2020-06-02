@@ -2,6 +2,12 @@
 #include <string.h>
 
 #define bool char
+#define true 1
+#define false 0
+#define MAXPRECISION 20
+
+typedef double number;
+typedef char* token;
 
 typedef enum
 {
@@ -113,6 +119,29 @@ Symbol findType(char ch)
 	}
 	return result;
 }
+
+token numbertoString(number num)
+{
+	int len = 0;
+	int precision = MAXPRECISION;
+	if (prefs.precision >= 0 && prefs.precision < precision)
+            {
+		precision = prefs.precision;
+            }
+	token str = (token)malloc(prefs.maxtokenlength*sizeof(char));
+	len = snprintf(str, prefs.maxtokenlength-1, "%.*f", precision, num); /* snprintf() formats and stores a series of characters and values in the array buffer */
+	if (prefs.precision == -1)
+	{
+		while (str[len-1] == '0')
+		{
+			len = snprintf(str, prefs.maxtokenlength-1, "%.*f", --precision, num);
+		}
+	}
+
+	return str;
+}
+
+
 
 int main()
 {    
