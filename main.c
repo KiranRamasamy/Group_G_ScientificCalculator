@@ -141,6 +141,38 @@ token numbertoString(number num)
 	return str;
 }
 
+bool ifIsFunc(token tk)
+{
+	return (strncmp(tk, "abs", 3) == 0
+		|| strncmp(tk, "floor", 5) == 0
+		|| strncmp(tk, "ceil", 4) == 0
+		|| strncmp(tk, "sin", 3) == 0
+		|| strncmp(tk, "cos", 3) == 0
+		|| strncmp(tk, "tan", 3) == 0
+		|| strncmp(tk, "arcsin", 6) == 0
+		|| strncmp(tk, "arccos", 6) == 0
+		|| strncmp(tk, "arctan", 6) == 0
+		|| strncmp(tk, "asin", 4) == 0
+		|| strncmp(tk, "acos", 4) == 0
+		|| strncmp(tk, "atan", 4) == 0
+		|| strncmp(tk, "sqrt", 4) == 0
+		|| strncmp(tk, "cbrt", 4) == 0
+		|| strncmp(tk, "log", 3) == 0
+		|| strncmp(tk, "min", 3) == 0
+		|| strncmp(tk, "max", 3) == 0
+		|| strncmp(tk, "sum", 3) == 0
+		|| strncmp(tk, "avg", 3) == 0
+		|| strncmp(tk, "mean", 4) == 0
+		|| strncmp(tk, "median", 6) == 0
+		|| strncmp(tk, "var", 3) == 0
+		|| strncmp(tk, "exp", 3) == 0);
+}
+
+bool ifIsSpecialVal(token tk)
+{
+	return (strncmp(tk, "nan", 3) == 0 || strncmp(tk, "inf", 3) == 0);
+}
+
 
 
 int main()
