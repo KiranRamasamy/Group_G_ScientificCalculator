@@ -3,6 +3,24 @@
 
 #define bool char
 
+typedef enum
+{
+	addop,
+	multop,
+	expop,
+	lparen,
+	rparen,
+	digit,
+	value,
+	decimal,
+	space,
+	text,
+	function,
+	identifier,
+	argsep,
+	invalid
+} Symbol;
+
 struct Preferences
 {
 	struct Display
@@ -44,7 +62,57 @@ char* getDataConsole(FILE* stream)
 	return bufferMemory;
 }
 
+Symbol findType(char ch)
+{
+	Symbol result;
+	switch(ch)
+	{
+		case '+':
+		case '-':
+			result = addop;
+			break;
+		case '*':
+		case '/':
+		case '%':
+			result = multop;
+			break;
+		case '^':
+			result = expop;
+			break;
+		case '(':
+			result = lparen;
+			break;
+		case ')':
+			result = rparen;
+			break;
+		case '.':
+			result = decimal;
+			break;
+		case ' ':
+			result = space;
+			break;
+		case ',':
+			result = argsep;
+			break;
+		case '0':
+		case '1':
+		case '2':
+		case '3':
+		case '4':
+		case '5':
+		case '6':
+		case '7':
+		case '8':
+		case '9':
+			result = digit;
+			break;
 
+		default:
+			result = invalid;
+			break;
+	}
+	return result;
+}
 
 int main()
 {    
@@ -54,6 +122,15 @@ int main()
 	
 	str = getDataConsole(stdin);
 	printf("%s",str);
+        while(str != NULL && strcmp(str, "quit") != 0)
+	{
+		if (strlen(str) == 0)
+		{
+		str = getDataFile(fp);
+		printf("%s",str);
+		}
+	}
+
 
 
 	free(str);
