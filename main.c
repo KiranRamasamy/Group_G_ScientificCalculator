@@ -68,6 +68,47 @@ char* getDataConsole(FILE* stream)
 	return bufferMemory;
 }
 
+
+void stackPushAssess(Stack *s, token val)
+{
+	if(prefs.display.postfix)
+		printf("\t%s\n", val);
+
+	switch(typeOfToken(val))
+	{
+		case function:
+			{
+				if (performFuncs(s, val) < 0)
+					return;
+			}
+			break;
+		case expop:
+		case multop:
+		case addop:
+			{
+				if(stackSize(s) >= 2)
+				{				
+					if (performOps(s, val) < 0)
+						return;
+								
+				}
+				else
+				{
+					stackPush(s, val);
+				}
+			}
+			break;
+		case value:
+			{
+				stackPush(s, val);
+			}
+			break;
+		default:
+			break;
+	}
+}
+
+
 Symbol findType(char ch)
 {
 	Symbol result;
