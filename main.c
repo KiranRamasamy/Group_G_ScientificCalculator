@@ -307,6 +307,22 @@ Symbol typeOfToken(token tk)
 	return ret;
 }
 
+bool postfix(token *tokens, int numTokens, Stack *)
+{
+for(i = 0; i < numTokens; i++)
+	{
+		switch(typeOfToken(tokens[i]))
+		{
+			case value:
+				{
+					stackPushAssess(output, tokens[i]); //adding to stack if token is number
+				}
+				break;
+		}
+	}
+
+}
+
 int main()
 {    
     
