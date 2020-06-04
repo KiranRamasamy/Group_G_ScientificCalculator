@@ -68,6 +68,13 @@ char* getDataConsole(FILE* stream)
 	return bufferMemory;
 }
 
+number constructNum(token str)
+{
+	number result = 0;
+	result = strtod(str, NULL); //strtod for string to float (double)
+	return result;
+}
+
 
 void stackPushAssess(Stack *s, token val)
 {
