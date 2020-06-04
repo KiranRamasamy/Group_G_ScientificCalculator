@@ -307,8 +307,13 @@ Symbol typeOfToken(token tk)
 	return ret;
 }
 
-bool postfix(token *tokens, int numTokens, Stack *)
+bool postfix(token *tokens, int numTokens, Stack *output)
 {
+	Stack operators, intermediate;
+	int i;
+	//bool err = false;
+	stackInit(&operators, numTokens);
+	stackInit(&intermediate, numTokens);
 for(i = 0; i < numTokens; i++)
 	{
 		switch(typeOfToken(tokens[i]))
