@@ -314,6 +314,52 @@ Symbol typeOfToken(token tk)
 	return ret;
 }
 
+int convertToTokens(char *str, char *(*tokensRef))
+{
+	int i = 0;
+	char** tokens = NULL;
+	char* ptr = str;
+	char ch = '\0';
+	int numTokens = 0;
+	char* tmpToken = malloc((prefs.maxtokenlength+1) * sizeof(char));
+	if (!tmpToken)
+	{
+		fprintf(stderr, "Malloc of temporary buffer failed\n");
+		return 0;
+	}
+	while((ch = *ptr++))
+	{
+		if(findType(ch) == invalid) 
+			break;
+
+		token newToken = NULL;
+		tmpToken[0] = '\0';
+		switch(findType(ch))
+		{
+			case addop:
+                        
+                        case multop:
+
+			case expop:
+
+			case lparen:
+
+			case rparen:
+
+			case argsep:
+                        
+                        case digit:
+
+			case decimal:
+                        
+                        case text:
+                        
+                        case default:
+                }
+          }
+}
+
+
 bool postfix(token *tokens, int numTokens, Stack *output)
 {
 	Stack operators, intermediate;
