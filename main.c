@@ -359,6 +359,40 @@ int convertToTokens(char *str, char *(*tokensRef))
           }
 }
 
+int decidePrecedence(token op1, token op2)
+{
+	int ret = 0;
+
+	if (op2 == NULL)
+        {
+		ret = 1;
+	}
+	else if(typeOfToken(op1) == typeOfToken(op2)) 
+	{
+		ret = 0;
+	 }  
+	else if(typeOfToken(op1) == addop
+			&& (typeOfToken(op2) == multop || typeOfToken(op2) == expop)) 
+	{
+		ret = 1;
+	}
+	else if(typeOfToken(op2) == addop
+			&& (typeOfToken(op1) == multop || typeOfToken(op1) == expop)) 
+	{
+		ret = 1;
+	}
+	else if(typeOfToken(op1) == multop
+			&& typeOfToken(op2) == expop) 
+	{
+		ret = 1;
+	}
+	else if(typeOfToken(op1) == expop
+			&& typeOfToken(op2) == multop) 
+	{
+		ret = 1;
+	}
+}
+
 
 bool postfix(token *tokens, int numTokens, Stack *output)
 {
