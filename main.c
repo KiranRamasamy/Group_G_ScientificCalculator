@@ -5,6 +5,11 @@
 #define true 1
 #define false 0
 #define MAXPRECISION 20
+#define FUNCTIONSEPARATOR "|"
+
+#ifndef NAN
+#define NAN (0.0/0.0)
+#endif
 
 typedef double number;
 typedef char* token;
@@ -268,6 +273,22 @@ bool ifIsSpecialVal(token tk)
 	return (strncmp(tk, "nan", 3) == 0 || strncmp(tk, "inf", 3) == 0);
 }
 
+int performFuncs(Stack *s, token function)
+{
+if (stackSize(s) == 0)
+	{
+		//throwErr here with missing input
+		stackPush(s, numbertoString(NAN));
+		return -1;
+	}
+	else if (stackSize(s) == 1 && strcmp(stackTop(s), FUNCTIONSEPARATOR) == 0)
+	{
+		stackPop(s);
+		//throwErr here with missing input
+		stackPush(s, numbertoString(NAN));
+		return -1;
+	}
+}
 Symbol typeOfToken(token tk)
 {
 	if (!tk)
