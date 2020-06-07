@@ -73,6 +73,13 @@ char* getDataConsole(FILE* stream)
 	return bufferMemory;
 }
 
+number constructNum(token str)
+{
+	number result = 0;
+	result = strtod(str, NULL); //strtod for string to float (double)
+	return result;
+}
+
 
 void stackPushAssess(Stack *s, token val)
 {
@@ -326,6 +333,107 @@ Symbol typeOfToken(token tk)
 			break;
 	}
 	return ret;
+}
+
+int convertToTokens(char *str, char *(*tokensRef))
+{
+	int i = 0;
+	char** tokens = NULL;
+	char* ptr = str;
+	char ch = '\0';
+	int numTokens = 0;
+	char* tmpToken = malloc((prefs.maxtokenlength+1) * sizeof(char));
+	if (!tmpToken)
+	{
+		fprintf(stderr, "Malloc of temporary buffer failed\n");
+		return 0;
+	}
+	while((ch = *ptr++))
+	{
+		if(findType(ch) == invalid) 
+			break;
+
+		token newToken = NULL;
+		tmpToken[0] = '\0';
+		switch(findType(ch))
+		{
+			case addop:
+                        
+                        case multop:
+
+			case expop:
+
+			case lparen:
+
+			case rparen:
+
+			case argsep:
+                        
+                        case digit:
+
+			case decimal:
+                        
+                        case text:
+                        
+                        case default:
+                }
+          }
+}
+
+int decidePrecedence(token op1, token op2)
+{
+	int ret = 0;
+
+	if (op2 == NULL)
+        {
+		ret = 1;
+	}
+	else if(typeOfToken(op1) == typeOfToken(op2)) 
+	{
+		ret = 0;
+	 }  
+	else if(typeOfToken(op1) == addop
+			&& (typeOfToken(op2) == multop || typeOfToken(op2) == expop)) 
+	{
+		ret = 1;
+	}
+	else if(typeOfToken(op2) == addop
+			&& (typeOfToken(op1) == multop || typeOfToken(op1) == expop)) 
+	{
+		ret = 1;
+	}
+	else if(typeOfToken(op1) == multop
+			&& typeOfToken(op2) == expop) 
+	{
+		ret = 1;
+	}
+	else if(typeOfToken(op1) == expop
+			&& typeOfToken(op2) == multop) 
+	{
+		ret = 1;
+	}
+}
+
+
+bool postfix(token *tokens, int numTokens, Stack *output)
+{
+	Stack operators, intermediate;
+	int i;
+	//bool err = false;
+	stackInit(&operators, numTokens);
+	stackInit(&intermediate, numTokens);
+for(i = 0; i < numTokens; i++)
+	{
+		switch(typeOfToken(tokens[i]))
+		{
+			case value:
+				{
+					stackPushAssess(output, tokens[i]); //adding to stack if token is number
+				}
+				break;
+		}
+	}
+
 }
 
 int main()
