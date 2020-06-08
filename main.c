@@ -335,10 +335,11 @@ Symbol typeOfToken(token tk)
 	return ret;
 }
 
-int convertToTokens(char *str, char *(*tokensRef))
+int convertToTokens(char *str, char *(**tokensRef))
 {
 	int i = 0;
 	char** tokens = NULL;
+        char ** temp = NULL;
 	char* ptr = str;
 	char ch = '\0';
 	int numTokens = 0;
