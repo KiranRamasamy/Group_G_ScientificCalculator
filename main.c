@@ -443,12 +443,38 @@ for(i = 0; i < numTokens; i++)
 					stackPushAssess(output, tokens[i]); //adding to stack if token is number
 				}
 				break;
+			case function:
+				{
+					while(stackSize(&operators) > 0
+						&& (typeOfToken(tokens[i]) != lparen)
+						&& ((decidePrecedence(tokens[i], (char*)stackTop(&operators)) <= 0)))
+					{
+						stackPushAssess(output, stackPop(&operators));
+						stackPush(&intermediate, stackTop(output));
+					}
+
+					stackPush(&operators, tokens[i]);//token is function token
+				}
+				break;
+				case argsep:
+				{
+					while(stackSize(&operators) > 0
+						&& typeOfToken((token)stackTop(&operators)) != lparen
+						&& stackSize(&operators) > 1)
+					{
+						
+						stackPushAssess(output, stackPop(&operators));//popping all operators onto output queue till top is left paren
+						stackPush(&intermediate, stackTop(output));
+					}
+					
+				}
+				break;
 		}
 	}
 
 }
 
-int main()
+int main(int argc, char *argv[])
 {    
     
 
