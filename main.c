@@ -546,6 +546,26 @@ for(i = 0; i < numTokens; i++)
 
 }
 
+bool leftAssociative(token op)
+{
+	bool ret = false;
+	switch(typeOfToken(op))
+	{
+		case addop:
+		case multop:
+
+			ret = true;
+			break;
+		case function:
+		case expop:
+			ret = false;
+			break;
+		default:
+			break;
+	}
+	return ret;
+}
+
 int main(int argc, char *argv[])
 {    
     
