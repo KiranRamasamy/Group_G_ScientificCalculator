@@ -485,7 +485,7 @@ bool postfix(token *tokens, int numTokens, Stack *output)
 {
 	Stack operators, intermediate;
 	int i;
-	//bool err = false;
+	bool err = false;
 	stackInit(&operators, numTokens);
 	stackInit(&intermediate, numTokens);
 for(i = 0; i < numTokens; i++)
@@ -521,6 +521,24 @@ for(i = 0; i < numTokens; i++)
 						stackPush(&intermediate, stackTop(output));
 					}
 					
+				}
+				break;
+			case addop:
+			case multop:
+			case expop:
+				{
+	
+					while(stackSize(&operators) > 0
+						&& (typeOfToken((char*)stackTop(&operators)) == addop || typeOfToken((char*)stackTop(&operators)) == multop || typeOfToken((char*)stackTop(&operators)) == expop)
+						&& ((leftAssociative(tokens[i]) && decidePrecedence(tokens[i], (char*)stackTop(&operators)) <= 0)
+							|| (!leftAssociative(tokens[i]) && decidePrecedence(tokens[i], (char*)stackTop(&operators)) < 0)))
+					{
+						
+						stackPushAssess(output, stackPop(&operators));
+						stackPush(&intermediate, stackTop(output));
+					}
+					
+					stackPush(&operators, tokens[i]);
 				}
 				break;
 		}
