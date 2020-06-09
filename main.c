@@ -450,7 +450,7 @@ int decidePrecedence(token op1, token op2)
 	else if(typeOfToken(op1) == addop
 			&& (typeOfToken(op2) == multop || typeOfToken(op2) == expop)) 
 	{
-		ret = 1;
+		ret = -1;
 	}
 	else if(typeOfToken(op2) == addop
 			&& (typeOfToken(op1) == multop || typeOfToken(op1) == expop)) 
@@ -460,7 +460,7 @@ int decidePrecedence(token op1, token op2)
 	else if(typeOfToken(op1) == multop
 			&& typeOfToken(op2) == expop) 
 	{
-		ret = 1;
+		ret = -1;
 	}
 	else if(typeOfToken(op1) == expop
 			&& typeOfToken(op2) == multop) 
@@ -468,14 +468,14 @@ int decidePrecedence(token op1, token op2)
 		ret = 1;
 	}
 	else if (typeOfToken(op1) == function
-			&& (typeOfToken(op2) == addop || typeOfToken(op2) == multop || typeOfToken(op2) == expop))
+			&& (typeOfToken(op2) == addop || typeOfToken(op2) == multop || typeOfToken(op2) == expop || typeOfToken(op2) == lparen))
 	{
 		ret = 1;
 	}
 	else if ((typeOfToken(op1) == addop || typeOfToken(op1) == multop || typeOfToken(op1) == expop)
 			&& typeOfToken(op2) == function)
 	{
-		ret = 1;
+		ret = -1;
 	}
 	return ret;
 }
