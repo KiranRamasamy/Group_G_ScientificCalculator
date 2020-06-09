@@ -359,6 +359,60 @@ int convertToTokens(char *str, char *(**tokensRef))
 		switch(findType(ch))
 		{
 			case addop:
+                               {
+					if(ch == '-'
+						&& (numTokens == 0
+							|| (typeOfToken(tokens[numTokens-1]) == addop
+								|| typeOfToken(tokens[numTokens-1]) == multop
+								|| typeOfToken(tokens[numTokens-1]) == expop
+								|| typeOfToken(tokens[numTokens-1]) == lparen
+								|| typeOfToken(tokens[numTokens-1]) == argsep)))
+					{
+
+						{
+							int len = 1;
+							bool hasDecimal = false;
+							bool hasExponent = false;
+
+							if(findType(ch) == decimal) 
+							{
+								//printf("Decimal\n");
+								hasDecimal = true;
+								len++;
+								tmpToken[0] = '0';
+								tmpToken[1] = '.';
+							}
+							else 
+							{
+								tmpToken[len-1] = ch;
+							}
+
+							
+							for(; /* Don't change len */
+								*ptr /* There is a next character and it is not null */
+								&& len <= prefs.maxtokenlength
+								&& (findType(*ptr) == digit /* The next character is a digit */
+								 	|| ((findType(*ptr) == decimal /* Or the next character is a decimal */
+								 		&& hasDecimal == 0)) /* But we have not added a decimal */
+								 	|| ((*ptr == 'E' || *ptr == 'e') /* Or the next character is an exponent 
+								 		&& hasExponent == false) /* But we have not added an exponent yet */
+								|| ((*ptr == '+' || *ptr == '-') && hasExponent == true)); /* Exponent with sign */
+								++len)
+							{
+								if(findType(*ptr) == decimal)
+									hasDecimal = true;
+								else if(*ptr == 'E' || *ptr == 'e')
+									hasExponent = true;
+								tmpToken[len] = *ptr++;
+							}
+
+
+							tmpToken[len] = '\0';
+						}
+						break;
+					}
+				}
+
                         
                         case multop:
 
