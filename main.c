@@ -295,6 +295,41 @@ if (stackSize(s) == 0)
 		stackPush(s, numbertoString(NAN));
 		return -1;
 	}
+	
+	token input = (token)stackPop(s);
+	number num = constructNum(input);
+	number result = num;
+	number counter = 0;
+
+	if(strncmp(function, "abs", 3) == 0)
+		result = fabs(num);
+	else if(strncmp(function, "floor", 5) == 0)
+		result = floor(num);
+	else if(strncmp(function, "ceil", 4) == 0)
+		result = ceil(num);
+	else if(strncmp(function, "sin", 3) == 0)
+		result = !prefs.mode.degrees ? sin(num) : sin(convertToRad(num));
+	else if(strncmp(function, "cos", 3) == 0)
+		result = !prefs.mode.degrees ? cos(num) : cos(convertToRad(num));
+	else if(strncmp(function, "tan", 3) == 0)
+		result = !prefs.mode.degrees ? tan(num) : tan(convertToRad(num));
+	else if(strncmp(function, "arcsin", 6) == 0
+		 || strncmp(function, "asin", 4) == 0)
+		result = !prefs.mode.degrees ? asin(num) : convertToDeg(asin(num));
+	else if(strncmp(function, "arccos", 6) == 0
+		 || strncmp(function, "acos", 4) == 0)
+		result = !prefs.mode.degrees ? acos(num) : convertToDeg(acos(num));
+	else if(strncmp(function, "arctan", 6) == 0
+		 || strncmp(function, "atan", 4) == 0)
+		result = !prefs.mode.degrees ? atan(num) : convertToDeg(atan(num));
+	else if(strncmp(function, "sqrt", 4) == 0)
+		result = sqrt(num);
+	else if(strncmp(function, "cbrt", 4) == 0)
+		result = cbrt(num);
+	else if(strncmp(function, "log", 3) == 0)
+		result = log(num);
+	else if(strncmp(function, "exp", 3) == 0)
+		result = exp(num);
 }
 Symbol typeOfToken(token tk)
 {
