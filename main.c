@@ -764,7 +764,16 @@ bool leftAssociative(token op)
 int main(int argc, char *argv[])
 {    
     
-	char* str = NULL;
+	char* str = NULL;	
+	char* prev_output = malloc(128);
+
+	token* tokens = NULL;
+	int numTokens = 0;
+	Stack expr;
+	int i;
+	int ch, rflag = 0;
+	prefs.precision = DEFAULTPRECISION;
+	prefs.maxtokenlength = MAXTOKENLENGTH;
 	
 	str = getDataConsole(stdin);
 	printf("%s",str);
