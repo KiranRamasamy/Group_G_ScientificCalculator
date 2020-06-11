@@ -339,6 +339,25 @@ else if(strncmp(function, "min", 3) == 0)
 			if (num < result)
 				result = num;
 		}
+	}
+	else if(strncmp(function, "max", 3) == 0)
+	{
+		while (stackSize(s) > 0 && strcmp(stackTop(s), FUNCTIONSEPARATOR) != 0)
+		{
+			input = (token)stackPop(s);
+			num = constructNum(input);
+			if (num > result)
+				result = num;
+		}
+	}
+	else if(strncmp(function, "sum", 3) == 0)
+	{
+		while (stackSize(s) > 0  && strcmp(stackTop(s), FUNCTIONSEPARATOR) != 0)
+		{
+			input = (token)stackPop(s);
+			num = constructNum(input);
+			result += num;
+		}
 	}		
 }
 Symbol typeOfToken(token tk)
