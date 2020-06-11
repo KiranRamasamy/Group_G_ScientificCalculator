@@ -437,6 +437,7 @@ int convertToTokens(char *str, char *(**tokensRef))
 		{
 			case addop:
                                {
+                                      /* Check if this is a negative */
 					if(ch == '-'
 						&& (numTokens == 0
 							|| (typeOfToken(tokens[numTokens-1]) == addop
@@ -489,7 +490,6 @@ int convertToTokens(char *str, char *(**tokensRef))
 						break;
 					}
 				}
-
                         
                         case multop:
 			case expop:
@@ -549,11 +549,64 @@ int convertToTokens(char *str, char *(**tokensRef))
 				break;
                         
                         case text:
+                              /* Assemble an n-character (plus null-terminator) text token */
+				{
+					int len = 1;
+					tmpToken[0] = ch;
+					for(len = 1; *ptr && findType(*ptr) == text && len <= prefs.maxtokenlength; ++len)
+					{
+						tmpToken[len] = *ptr++;
+					}
+					tmpToken[len] = '\0';
+				}
+				break;
                         
-                        case default:
+                        default:
+                             break;
                 }
-          }
+             /* Add to list of tokens */
+             if(tmpToken[0] != '\0' && strlen(tmpToken) > 0)
+		{
+			numTokens++;
+			/*if(tokens == NULL)- First allocation
+				tokens = (char**)malloc(numTokens * sizeof(char*));
+			else*/
+			newToken = malloc((strlen(tmpToken)+1) * sizeof(char));
+			if (!newToken)
+			{
+				numTokens--;
+				break;
+			}
+			strcpy(newToken, tmpToken);
+			newToken[strlen(tmpToken)] = '\0';
+			tmp = (char**)realloc(tokens, numTokens * sizeof(char*));
+			if (tmp == NULL)
+			{
+				if (tokens != NULL)
+				{
+					for(i=0;i<numTokens-1;i++)
+					{
+						if (tokens[i] != NULL)
+							free(tokens[i]);
+					}
+					free(tokens);
+				}
+				*tokensRef = NULL;
+				free(newToken);
+				free(tmpToken);
+				return 0;
+			}
+			tokens = tmp;
+			tmp = NULL;
+			tokens[numTokens - 1] = newToken;
+		}
+	}
+	*tokensRef = tokens; /* Send back out */
+	free(tmpToken);
+	tmpToken = NULL;
+	return numTokens;
 }
+
 
 int decidePrecedence(token op1, token op2)
 {
@@ -599,7 +652,6 @@ int decidePrecedence(token op1, token op2)
 	}
 	return ret;
 }
-
 
 bool postfix(token *tokens, int numTokens, Stack *output)
 {
@@ -661,6 +713,42 @@ for(i = 0; i < numTokens; i++)
 					stackPush(&operators, tokens[i]);
 				}
 				break;
+			case lparen:
+				{
+
+					if (typeOfToken(stackTop(&operators)) == function)
+						stackPush(output, FUNCTIONSEPARATOR);
+					stackPush(&operators, tokens[i]);
+				}
+				break;
+			case rparen:
+				{
+					
+					while(stackSize(&operators) > 0
+						&& typeOfToken((token)stackTop(&operators)) != lparen
+						&& stackSize(&operators) > 1)
+					{
+						
+						stackPushAssess(output, stackPop(&operators));
+						stackPush(&intermediate, stackTop(output));
+					}
+					if(stackSize(&operators) > 0
+						&& typeOfToken((token)stackTop(&operators)) != lparen)
+					{
+						err = true;
+						throwErr(parenMismatch);
+					}
+					
+					stackPop(&operators); 
+					while (stackSize(&operators) > 0 && typeOfToken((token)stackTop(&operators)) == function)
+					{
+						stackPushAssess(output, stackPop(&operators));
+						stackPush(&intermediate, stackTop(output));
+					}
+				}
+				break;
+			default:
+				break;
 		}
 	}
 
@@ -689,18 +777,34 @@ bool leftAssociative(token op)
 int main(int argc, char *argv[])
 {    
     
+	char* str = NULL;	
+	char* prev_output = malloc(128);
 
-	char* str = NULL;
+	token* tokens = NULL;
+	int numTokens = 0;
+	Stack expr;
+	int i;
+	int ch, rflag = 0;
+	prefs.precision = DEFAULTPRECISION;
+	prefs.maxtokenlength = MAXTOKENLENGTH;
 	
 	str = getDataConsole(stdin);
 	printf("%s",str);
         while(str != NULL && strcmp(str, "quit") != 0)
 	{
 		if (strlen(str) == 0)
-		{
-		str = getDataFile(fp);
+			goto get_new_string;
+		
+		
+			numTokens = convertToTokens(str, &tokens);
+			free(str);
+			str = NULL;	
+			
+	get_new_string:
+		
+		str = getDataConsole(stdin);
 		printf("%s",str);
-		}
+		
 	}
 
 
