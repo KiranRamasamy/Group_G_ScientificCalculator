@@ -358,6 +358,19 @@ else if(strncmp(function, "min", 3) == 0)
 			num = constructNum(input);
 			result += num;
 		}
+	}
+	else if(strncmp(function, "avg", 3) == 0 ||
+			strncmp(function, "mean", 4) == 0)
+	{
+		counter = 1;
+		while (stackSize(s) > 0  && strcmp(stackTop(s), FUNCTIONSEPARATOR) != 0)
+		{
+			input = (token)stackPop(s);
+			num = constructNum(input);
+			result += num;
+			counter++;
+		}
+		result /= counter;
 	}		
 }
 Symbol typeOfToken(token tk)
