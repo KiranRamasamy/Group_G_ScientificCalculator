@@ -629,6 +629,42 @@ for(i = 0; i < numTokens; i++)
 					stackPush(&operators, tokens[i]);
 				}
 				break;
+			case lparen:
+				{
+
+					if (typeOfToken(stackTop(&operators)) == function)
+						stackPush(output, FUNCTIONSEPARATOR);
+					stackPush(&operators, tokens[i]);
+				}
+				break;
+			case rparen:
+				{
+					
+					while(stackSize(&operators) > 0
+						&& typeOfToken((token)stackTop(&operators)) != lparen
+						&& stackSize(&operators) > 1)
+					{
+						
+						stackPushAssess(output, stackPop(&operators));
+						stackPush(&intermediate, stackTop(output));
+					}
+					if(stackSize(&operators) > 0
+						&& typeOfToken((token)stackTop(&operators)) != lparen)
+					{
+						err = true;
+						throwErr(parenMismatch);
+					}
+					
+					stackPop(&operators); 
+					while (stackSize(&operators) > 0 && typeOfToken((token)stackTop(&operators)) == function)
+					{
+						stackPushAssess(output, stackPop(&operators));
+						stackPush(&intermediate, stackTop(output));
+					}
+				}
+				break;
+			default:
+				break;
 		}
 	}
 
@@ -657,7 +693,6 @@ bool leftAssociative(token op)
 int main(int argc, char *argv[])
 {    
     
-
 	char* str = NULL;
 	
 	str = getDataConsole(stdin);
@@ -665,10 +700,18 @@ int main(int argc, char *argv[])
         while(str != NULL && strcmp(str, "quit") != 0)
 	{
 		if (strlen(str) == 0)
-		{
-		str = getDataFile(fp);
+			goto get_new_string;
+		
+		
+			numTokens = convertToTokens(str, &tokens);
+			free(str);
+			str = NULL;	
+			
+	get_new_string:
+		
+		str = getDataConsole(stdin);
 		printf("%s",str);
-		}
+		
 	}
 
 
