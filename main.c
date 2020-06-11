@@ -424,6 +424,7 @@ int convertToTokens(char *str, char *(**tokensRef))
 		{
 			case addop:
                                {
+                                      /* Check if this is a negative */
 					if(ch == '-'
 						&& (numTokens == 0
 							|| (typeOfToken(tokens[numTokens-1]) == addop
@@ -476,7 +477,6 @@ int convertToTokens(char *str, char *(**tokensRef))
 						break;
 					}
 				}
-
                         
                         case multop:
 			case expop:
@@ -536,11 +536,64 @@ int convertToTokens(char *str, char *(**tokensRef))
 				break;
                         
                         case text:
+                              /* Assemble an n-character (plus null-terminator) text token */
+				{
+					int len = 1;
+					tmpToken[0] = ch;
+					for(len = 1; *ptr && findType(*ptr) == text && len <= prefs.maxtokenlength; ++len)
+					{
+						tmpToken[len] = *ptr++;
+					}
+					tmpToken[len] = '\0';
+				}
+				break;
                         
-                        case default:
+                        default:
+                             break;
                 }
-          }
+             /* Add to list of tokens */
+             if(tmpToken[0] != '\0' && strlen(tmpToken) > 0)
+		{
+			numTokens++;
+			/*if(tokens == NULL)- First allocation
+				tokens = (char**)malloc(numTokens * sizeof(char*));
+			else*/
+			newToken = malloc((strlen(tmpToken)+1) * sizeof(char));
+			if (!newToken)
+			{
+				numTokens--;
+				break;
+			}
+			strcpy(newToken, tmpToken);
+			newToken[strlen(tmpToken)] = '\0';
+			tmp = (char**)realloc(tokens, numTokens * sizeof(char*));
+			if (tmp == NULL)
+			{
+				if (tokens != NULL)
+				{
+					for(i=0;i<numTokens-1;i++)
+					{
+						if (tokens[i] != NULL)
+							free(tokens[i]);
+					}
+					free(tokens);
+				}
+				*tokensRef = NULL;
+				free(newToken);
+				free(tmpToken);
+				return 0;
+			}
+			tokens = tmp;
+			tmp = NULL;
+			tokens[numTokens - 1] = newToken;
+		}
+	}
+	*tokensRef = tokens; /* Send back out */
+	free(tmpToken);
+	tmpToken = NULL;
+	return numTokens;
 }
+
 
 int decidePrecedence(token op1, token op2)
 {
@@ -586,7 +639,6 @@ int decidePrecedence(token op1, token op2)
 	}
 	return ret;
 }
-
 
 bool postfix(token *tokens, int numTokens, Stack *output)
 {
