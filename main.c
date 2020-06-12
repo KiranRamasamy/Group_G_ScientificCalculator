@@ -57,6 +57,27 @@ struct Preferences
 	int maxtokenlength;
 } prefs;
 
+void throwErr(Error err)
+{
+	char* msg;
+	switch(err)
+	{
+		case divZero:
+			msg = "Divide by zero";
+			break;
+		case overflow:
+			msg = "Overflow";
+			break;
+		case parenMismatch:
+			msg = "Parentheses Mismatch";
+			break;
+		case inputMissing:
+			msg = "Input of function missing";
+			break;
+	}
+	printf("\tError: %s\n", msg);
+}
+
 
 char* getDataConsole(FILE* stream)
 {
