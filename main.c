@@ -1022,7 +1022,33 @@ int main(int argc, char *argv[])
 			if(stackSize(&expr) != 1)
 			{
 				printf("\tError evaluating expression\n");
-			}	
+			}
+                          
+                         else
+			{
+			if (!rflag)
+			printf("\t= ");
+
+			 prev_output = (char*)stackTop(&expr);
+
+			printf("%s\n", (char*)stackTop(&expr));
+			for (i=0; i< numTokens; i++)
+			{
+			if (tokens[i] == stackTop(&expr))
+			tokens[i] = NULL;
+			}
+			free(stackPop(&expr));
+			}
+
+			for(i = 0; i < numTokens; i++)
+			{
+			if (tokens[i] != NULL)
+			free(tokens[i]);
+			}
+			free(tokens);
+			tokens = NULL;
+			numTokens = 0;
+			stackFree(&expr);	
 			
 	get_new_string:
 		
