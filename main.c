@@ -1,14 +1,24 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
+#include <math.h> 
+#include <getopt.h>
+#include "stack.h"
 
 #define bool char
 #define true 1
 #define false 0
 #define MAXPRECISION 20
+#define MAXTOKENLENGTH 512
+#define DEFAULTPRECISION 5
 #define FUNCTIONSEPARATOR "|"
 
 #ifndef NAN
 #define NAN (0.0/0.0)
+#endif
+
+#ifndef INFINITY
+#define INFINITY (1.0/0.0)
 #endif
 
 typedef double number;
