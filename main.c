@@ -371,6 +371,42 @@ else if(strncmp(function, "min", 3) == 0)
 			counter++;
 		}
 		result /= counter;
+	}
+	else if(strncmp(function, "median", 6) == 0)
+	{
+		Stack tmp, safe;
+		counter = 1;
+		stackInit(&tmp, (stackSize(s) > 0 ? stackSize(s) : 1));
+		stackInit(&safe, (stackSize(s) > 0 ? stackSize(s) : 1));
+		stackPush(&tmp, input);
+		while (stackSize(s) > 0  && strcmp(stackTop(s), FUNCTIONSEPARATOR) != 0)
+		{
+			input = (token)stackPop(s);
+			num = constructNum(input);
+			while (stackSize(&tmp) > 0 && constructNum(stackTop(&tmp)) < num)
+			{
+				stackPush(&safe, stackPop(&tmp));
+			}
+			stackPush(&tmp, input);
+			while (stackSize(&safe) > 0)
+			{
+				stackPush(&tmp, stackPop(&safe));
+			}
+			counter++;
+		}
+		stackFree(&safe);
+		counter = (number)(((int)counter+1)/2);
+		while (counter > 1)
+		{
+			stackPop(&tmp);
+			counter--;
+		}
+		result = constructNum(stackPop(&tmp));
+		while (stackSize(&tmp) > 0)
+		{
+			stackPop(&tmp);
+		}
+		stackFree(&tmp);
 	}		
 }
 Symbol typeOfToken(token tk)
