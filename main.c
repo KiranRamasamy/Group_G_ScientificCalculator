@@ -989,6 +989,19 @@ int main(int argc, char *argv[])
 	int ch, rflag = 0;
 	prefs.precision = DEFAULTPRECISION;
 	prefs.maxtokenlength = MAXTOKENLENGTH;
+
+
+        while ((ch = getopt(argc, argv, "rm:")) != -1) 
+         {
+          switch (ch) 
+                   {
+                case 'r':
+                    rflag = 1;
+                    break;
+                case 'm':
+                    prefs.maxtokenlength = atoi(optarg);
+                    }
+          }
 	
 	str = getDataConsole(stdin);
 	printf("%s",str);
@@ -1003,10 +1016,7 @@ int main(int argc, char *argv[])
 			str = NULL;
 
 			stackInit(&expr, numTokens);
-			if(prefs.display.postfix)
-			{
-				printf("\tPostfix stack:\n");
-			}
+			
 			postfix(tokens, numTokens, &expr);
 			
 			if(stackSize(&expr) != 1)
