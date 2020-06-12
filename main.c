@@ -86,32 +86,6 @@ void throwErr(Error err)
 	printf("\tError: %s\n", msg);
 }
 
-
-char* getDataConsole(FILE* stream)
-{
-	unsigned int maxlen = 128, size = 128;
-	char* bufferMemory = (char*)malloc(maxlen);
-
-	if(bufferMemory != NULL) /* NULL if malloc() fails */
-	{
-		char ch = EOF;
-		int pos = 0;
-
-		/* Read input characters one by one and resizing the buffer as necessary*/
-		while((ch = getchar()) != EOF && ch != '\n')
-		{
-			bufferMemory[pos++] = ch;
-			if(pos == size) /* Next character to be inserted needs more memory*/
-			{
-				size = pos + maxlen;
-				bufferMemory = (char*)realloc(bufferMemory, size);
-			}
-		}
-		bufferMemory[pos] = '\0'; /*Null-terminate the completed string */
-	}
-	return bufferMemory;
-}
-
 inline unsigned int toDigit(char ch)
 {
 	return ch - '0';
@@ -123,194 +97,6 @@ number constructNum(token str)
 	result = strtod(str, NULL); /*strtod for string to float (double)*/
 	return result;
 }
-
-Symbol findType(char ch)
-{
-	Symbol result;
-	switch(ch)
-	{
-		case '+':
-		case '-':
-			result = addop;
-			break;
-		case '*':
-		case '/':
-		case '%':
-			result = multop;
-			break;
-		case '^':
-			result = expop;
-			break;
-		case '(':
-			result = lparen;
-			break;
-		case ')':
-			result = rparen;
-			break;
-		case '.':
-			result = decimal;
-			break;
-		case ' ':
-			result = space;
-			break;
-		case ',':
-			result = argsep;
-			break;
-		case '0':
-		case '1':
-		case '2':
-		case '3':
-		case '4':
-		case '5':
-		case '6':
-		case '7':
-		case '8':
-		case '9':
-			result = digit;
-			break;
-                case 'A':
-		case 'B':
-		case 'C':
-		case 'D':
-		case 'E':
-		case 'F':
-		case 'G':
-		case 'H':
-		case 'I':
-		case 'J':
-		case 'K':
-		case 'L':
-		case 'M':
-		case 'N':
-		case 'O':
-		case 'P':
-		case 'Q':
-		case 'R':
-		case 'S':
-		case 'T':
-		case 'U':
-		case 'V':
-		case 'W':
-		case 'X':
-		case 'Y':
-		case 'Z':
-		case 'a':
-		case 'b':
-		case 'c':
-		case 'd':
-		case 'e':
-		case 'f':
-		case 'g':
-		case 'h':
-		case 'i':
-		case 'j':
-		case 'k':
-		case 'l':
-		case 'm':
-		case 'n':
-		case 'o':
-		case 'p':
-		case 'q':
-		case 'r':
-		case 's':
-		case 't':
-		case 'u':
-		case 'v':
-		case 'w':
-		case 'x':
-		case 'y':
-		case 'z':
-			result = text;
-			break;
-
-		default:
-			result = invalid;
-			break;
-	}
-	return result;
-}
-
-Symbol typeOfToken(token tk)
-{
-	if (!tk)
-         {
-		return invalid;
-         }
-	Symbol ret = findType(*tk);
-	switch(ret)
-	{
-		case text:
-			if(ifIsFunc(tk))
-                         {
-				ret = function;
-                         }
-			else if(ifIsSpecialVal(tk))
-                         {
-				ret = value;
-                         }
-			else
-                         {
-				ret = identifier;
-                         }
-			break;
-		case addop:
-			if(*tk == '-' && strlen(tk) > 1)
-                          {
-				ret = typeOfToken(tk+1);
-                          }
-			break;
-		case decimal:
-		case digit:
-			ret = value;
-			break;
-		default:
-			break;
-	}
-	return ret;
-}
-
-
-void stackPushAssess(Stack *s, token val)
-{
-	if(prefs.display.postfix)
-		printf("\t%s\n", val);
-
-	switch(typeOfToken(val))
-	{
-		case function:
-			{
-				if (performFuncs(s, val) < 0)
-					return;
-			}
-			break;
-		case expop:
-		case multop:
-		case addop:
-			{
-				if(stackSize(s) >= 2)
-				{				
-					if (performOps(s, val) < 0)
-						return;
-								
-				}
-				else
-				{
-					stackPush(s, val);
-				}
-			}
-			break;
-		case value:
-			{
-				stackPush(s, val);
-			}
-			break;
-		default:
-			break;
-	}
-}
-
-
-
 
 token numbertoString(number num)
 {
@@ -331,38 +117,6 @@ token numbertoString(number num)
 	}
 
 	return str;
-}
-
-bool ifIsFunc(token tk)
-{
-	return (strncmp(tk, "abs", 3) == 0
-		|| strncmp(tk, "floor", 5) == 0
-		|| strncmp(tk, "ceil", 4) == 0
-		|| strncmp(tk, "sin", 3) == 0
-		|| strncmp(tk, "cos", 3) == 0
-		|| strncmp(tk, "tan", 3) == 0
-		|| strncmp(tk, "arcsin", 6) == 0
-		|| strncmp(tk, "arccos", 6) == 0
-		|| strncmp(tk, "arctan", 6) == 0
-		|| strncmp(tk, "asin", 4) == 0
-		|| strncmp(tk, "acos", 4) == 0
-		|| strncmp(tk, "atan", 4) == 0
-		|| strncmp(tk, "sqrt", 4) == 0
-		|| strncmp(tk, "cbrt", 4) == 0
-		|| strncmp(tk, "log", 3) == 0
-		|| strncmp(tk, "min", 3) == 0
-		|| strncmp(tk, "max", 3) == 0
-		|| strncmp(tk, "sum", 3) == 0
-		|| strncmp(tk, "avg", 3) == 0
-		|| strncmp(tk, "mean", 4) == 0
-		|| strncmp(tk, "median", 6) == 0
-		|| strncmp(tk, "var", 3) == 0
-		|| strncmp(tk, "exp", 3) == 0);
-}
-
-bool ifIsSpecialVal(token tk)
-{
-	return (strncmp(tk, "nan", 3) == 0 || strncmp(tk, "inf", 3) == 0);
 }
 
 int performFuncs(Stack *s, token function)
@@ -525,7 +279,6 @@ else if(strncmp(function, "min", 3) == 0)
 	return 0;
 }	
 
-
 int performOps(Stack *s, token op)
 {
 	int err = 0;
@@ -596,6 +349,208 @@ int performOps(Stack *s, token op)
 }
 
 
+char* getDataConsole(FILE* stream)
+{
+	unsigned int maxlen = 128, size = 128;
+	char* bufferMemory = (char*)malloc(maxlen);
+
+	if(bufferMemory != NULL) /* NULL if malloc() fails */
+	{
+		char ch = EOF;
+		int pos = 0;
+
+		/* Read input characters one by one and resizing the buffer as necessary*/
+		while((ch = getchar()) != EOF && ch != '\n')
+		{
+			bufferMemory[pos++] = ch;
+			if(pos == size) /* Next character to be inserted needs more memory*/
+			{
+				size = pos + maxlen;
+				bufferMemory = (char*)realloc(bufferMemory, size);
+			}
+		}
+		bufferMemory[pos] = '\0'; /*Null-terminate the completed string */
+	}
+	return bufferMemory;
+}
+
+
+Symbol findType(char ch)
+{
+	Symbol result;
+	switch(ch)
+	{
+		case '+':
+		case '-':
+			result = addop;
+			break;
+		case '*':
+		case '/':
+		case '%':
+			result = multop;
+			break;
+		case '^':
+			result = expop;
+			break;
+		case '(':
+			result = lparen;
+			break;
+		case ')':
+			result = rparen;
+			break;
+		case '.':
+			result = decimal;
+			break;
+		case ' ':
+			result = space;
+			break;
+		case ',':
+			result = argsep;
+			break;
+		case '0':
+		case '1':
+		case '2':
+		case '3':
+		case '4':
+		case '5':
+		case '6':
+		case '7':
+		case '8':
+		case '9':
+			result = digit;
+			break;
+                case 'A':
+		case 'B':
+		case 'C':
+		case 'D':
+		case 'E':
+		case 'F':
+		case 'G':
+		case 'H':
+		case 'I':
+		case 'J':
+		case 'K':
+		case 'L':
+		case 'M':
+		case 'N':
+		case 'O':
+		case 'P':
+		case 'Q':
+		case 'R':
+		case 'S':
+		case 'T':
+		case 'U':
+		case 'V':
+		case 'W':
+		case 'X':
+		case 'Y':
+		case 'Z':
+		case 'a':
+		case 'b':
+		case 'c':
+		case 'd':
+		case 'e':
+		case 'f':
+		case 'g':
+		case 'h':
+		case 'i':
+		case 'j':
+		case 'k':
+		case 'l':
+		case 'm':
+		case 'n':
+		case 'o':
+		case 'p':
+		case 'q':
+		case 'r':
+		case 's':
+		case 't':
+		case 'u':
+		case 'v':
+		case 'w':
+		case 'x':
+		case 'y':
+		case 'z':
+			result = text;
+			break;
+
+		default:
+			result = invalid;
+			break;
+	}
+	return result;
+}
+
+bool ifIsFunc(token tk)
+{
+	return (strncmp(tk, "abs", 3) == 0
+		|| strncmp(tk, "floor", 5) == 0
+		|| strncmp(tk, "ceil", 4) == 0
+		|| strncmp(tk, "sin", 3) == 0
+		|| strncmp(tk, "cos", 3) == 0
+		|| strncmp(tk, "tan", 3) == 0
+		|| strncmp(tk, "arcsin", 6) == 0
+		|| strncmp(tk, "arccos", 6) == 0
+		|| strncmp(tk, "arctan", 6) == 0
+		|| strncmp(tk, "asin", 4) == 0
+		|| strncmp(tk, "acos", 4) == 0
+		|| strncmp(tk, "atan", 4) == 0
+		|| strncmp(tk, "sqrt", 4) == 0
+		|| strncmp(tk, "cbrt", 4) == 0
+		|| strncmp(tk, "log", 3) == 0
+		|| strncmp(tk, "min", 3) == 0
+		|| strncmp(tk, "max", 3) == 0
+		|| strncmp(tk, "sum", 3) == 0
+		|| strncmp(tk, "avg", 3) == 0
+		|| strncmp(tk, "mean", 4) == 0
+		|| strncmp(tk, "median", 6) == 0
+		|| strncmp(tk, "var", 3) == 0
+		|| strncmp(tk, "exp", 3) == 0);
+}
+
+bool ifIsSpecialVal(token tk)
+{
+	return (strncmp(tk, "nan", 3) == 0 || strncmp(tk, "inf", 3) == 0);
+}
+
+Symbol typeOfToken(token tk)
+{
+	if (!tk)
+         {
+		return invalid;
+         }
+	Symbol ret = findType(*tk);
+	switch(ret)
+	{
+		case text:
+			if(ifIsFunc(tk))
+                         {
+				ret = function;
+                         }
+			else if(ifIsSpecialVal(tk))
+                         {
+				ret = value;
+                         }
+			else
+                         {
+				ret = identifier;
+                         }
+			break;
+		case addop:
+			if(*tk == '-' && strlen(tk) > 1)
+                          {
+				ret = typeOfToken(tk+1);
+                          }
+			break;
+		case decimal:
+		case digit:
+			ret = value;
+			break;
+		default:
+			break;
+	}
+	return ret;
+}
 
 int convertToTokens(char *str, char *(**tokensRef))
 {
@@ -793,6 +748,26 @@ int convertToTokens(char *str, char *(**tokensRef))
 	return numTokens;
 }
 
+bool leftAssociative(token op)
+{
+	bool ret = false;
+	switch(typeOfToken(op))
+	{
+		case addop:
+		case multop:
+
+			ret = true;
+			break;
+		case function:
+		case expop:
+			ret = false;
+			break;
+		default:
+			break;
+	}
+	return ret;
+}
+
 
 int decidePrecedence(token op1, token op2)
 {
@@ -838,6 +813,46 @@ int decidePrecedence(token op1, token op2)
 	}
 	return ret;
 }
+
+void stackPushAssess(Stack *s, token val)
+{
+	if(prefs.display.postfix)
+		printf("\t%s\n", val);
+
+	switch(typeOfToken(val))
+	{
+		case function:
+			{
+				if (performFuncs(s, val) < 0)
+					return;
+			}
+			break;
+		case expop:
+		case multop:
+		case addop:
+			{
+				if(stackSize(s) >= 2)
+				{				
+					if (performOps(s, val) < 0)
+						return;
+								
+				}
+				else
+				{
+					stackPush(s, val);
+				}
+			}
+			break;
+		case value:
+			{
+				stackPush(s, val);
+			}
+			break;
+		default:
+			break;
+	}
+}
+
 
 bool postfix(token *tokens, int numTokens, Stack *output)
 {
@@ -989,25 +1004,6 @@ for(i = 0; i < numTokens; i++)
 
 }
 
-bool leftAssociative(token op)
-{
-	bool ret = false;
-	switch(typeOfToken(op))
-	{
-		case addop:
-		case multop:
-
-			ret = true;
-			break;
-		case function:
-		case expop:
-			ret = false;
-			break;
-		default:
-			break;
-	}
-	return ret;
-}
 
 int main(int argc, char *argv[])
 {    
