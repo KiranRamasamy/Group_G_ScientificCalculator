@@ -12,6 +12,8 @@
 #define MAXTOKENLENGTH 512
 #define DEFAULTPRECISION 5
 #define FUNCTIONSEPARATOR "|"
+#define PI 3.141592653589793
+
 
 #ifndef NAN
 #define NAN (0.0/0.0)
