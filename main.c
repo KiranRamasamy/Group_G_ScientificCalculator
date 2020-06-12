@@ -952,7 +952,19 @@ int main(int argc, char *argv[])
 		
 			numTokens = convertToTokens(str, &tokens);
 			free(str);
-			str = NULL;	
+			str = NULL;
+
+			stackInit(&expr, numTokens);
+			if(prefs.display.postfix)
+			{
+				printf("\tPostfix stack:\n");
+			}
+			postfix(tokens, numTokens, &expr);
+			
+			if(stackSize(&expr) != 1)
+			{
+				printf("\tError evaluating expression\n");
+			}	
 			
 	get_new_string:
 		
