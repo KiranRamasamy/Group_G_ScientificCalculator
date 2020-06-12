@@ -561,11 +561,12 @@ int convertToTokens(char *str, char *(**tokensRef))
 								tmpToken[len] = *ptr++;
 							}
 
-
+                                                        /* Append null-terminator */
 							tmpToken[len] = '\0';
 						}
 						break;
 					}
+                                      /* If it's not part of a number, it's an op - fall through */
 				}
                         
                         case multop:
@@ -590,7 +591,7 @@ int convertToTokens(char *str, char *(**tokensRef))
 
 					if(findType(ch) == decimal) /* Allow numbers to start with decimal */
 					{
-						//printf("Decimal\n");
+						/* printf("Decimal\n"); */
 						hasDecimal = true;
 						len++;
 						tmpToken[0] = '0';
@@ -601,8 +602,8 @@ int convertToTokens(char *str, char *(**tokensRef))
 						tmpToken[len-1] = ch;
 					}
 
-					// Assemble rest of number
-					for(; // Don't change len
+					/* Assemble rest of number */
+					for(; /* Don't change len */
 						*ptr /* There is a next character and it is not null */
 						&& len <= prefs.maxtokenlength
 						&& (findType(*ptr) == digit /* The next character is a digit */
