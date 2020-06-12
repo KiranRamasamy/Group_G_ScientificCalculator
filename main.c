@@ -455,6 +455,48 @@ else if(strncmp(function, "min", 3) == 0)
 	return 0;
 }	
 }
+
+int performOps(Stack *s, token op)
+{
+	int err = 0;
+	token roperand = (token)stackPop(s);
+	token loperand = (token)stackPop(s);
+	number lside = constructNum(loperand);
+	number rside = constructNum(roperand);
+	number ret;
+	switch(*op)
+	{
+		case '^':
+			{
+				ret = pow(lside, rside);
+			}
+			break;
+		case '*':
+			{
+				ret = lside * rside;
+			}
+			break;
+		case '/':
+			{
+				if(rside == 0)
+				{
+					throwErr(divZero);
+					if (lside == 0)
+						ret = NAN;
+					else
+						ret = INFINITY;
+					err = -1;
+				}
+				else
+					ret = lside / rside;
+			}
+			break;
+		
+	}
+	stackPush(s, numbertoString(ret));
+	return err;
+}
+
 Symbol typeOfToken(token tk)
 {
 	if (!tk)
