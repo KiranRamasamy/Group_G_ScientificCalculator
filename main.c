@@ -57,6 +57,14 @@ struct Preferences
 	int maxtokenlength;
 } prefs;
 
+typedef enum
+{
+	divZero,
+	overflow,
+	parenMismatch,
+	inputMissing,
+} Error;
+
 void throwErr(Error err)
 {
 	char* msg;
