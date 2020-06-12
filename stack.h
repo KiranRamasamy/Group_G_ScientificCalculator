@@ -20,7 +20,7 @@ int stackSize(Stack *s);
 
 void stackFree(Stack *s);
 
-void stackInit(Stack *s, int size);
+void stackInit(Stack *s, int size)
 {
 	s->content = malloc(size * sizeof(void*));
 	s->size = size;
