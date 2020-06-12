@@ -83,6 +83,11 @@ char* getDataConsole(FILE* stream)
 	return bufferMemory;
 }
 
+inline unsigned int toDigit(char ch)
+{
+	return ch - '0';
+}
+
 number constructNum(token str)
 {
 	number result = 0;
