@@ -407,7 +407,38 @@ else if(strncmp(function, "min", 3) == 0)
 			stackPop(&tmp);
 		}
 		stackFree(&tmp);
-	}		
+	}	
+	else if(strncmp(function, "var", 3) == 0)
+	{
+		Stack tmp;
+		counter = 1;
+		stackInit(&tmp, (stackSize(s) > 0 ? stackSize(s) : 1));
+		stackPush(&tmp, input);
+		number mean = result;
+		while (stackSize(s) > 0  && strcmp(stackTop(s), FUNCTIONSEPARATOR) != 0)
+		{
+			input = (token)stackPop(s);
+			stackPush(&tmp, input);
+			num = constructNum(input);
+			mean += num;
+			counter++;
+		}
+		mean /= counter;
+		result = 0;
+		while (stackSize(&tmp) > 0)
+		{
+			input = (token)stackPop(&tmp);
+			num = constructNum(input)-mean;
+			result += pow(num,2);
+		}
+		result /= counter;
+		stackFree(&tmp);
+	}
+	if (strcmp(stackTop(s), FUNCTIONSEPARATOR) == 0)
+		stackPop(s);
+	stackPush(s, numbertoString(result));
+	return 0;
+}	
 }
 Symbol typeOfToken(token tk)
 {
