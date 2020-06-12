@@ -818,6 +818,35 @@ for(i = 0; i < numTokens; i++)
 				break;
 		}
 	}
+	while(stackSize(&operators) > 0)
+	{
+		if(typeOfToken((token)stackTop(&operators)) == lparen)
+		{
+			throwErr(parenMismatch);
+			err = true;
+		}
+		
+		stackPushAssess(output, stackPop(&operators));
+		stackPush(&intermediate, stackTop(output));
+	}
+	stackPop(&intermediate);
+	// free remaining intermediate results
+	while (stackSize(&intermediate) > 0)
+	{
+		token s = stackPop(&intermediate);
+		free(s);
+	}
+	if (err == true)
+	{
+		while (stackSize(&operators) > 0)
+		{
+			token s = stackPop(&operators);
+			free(s);
+		}
+	}
+	stackFree(&intermediate);
+	stackFree(&operators);
+	return err;
 
 }
 
