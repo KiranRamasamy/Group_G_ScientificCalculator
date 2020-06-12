@@ -491,6 +491,34 @@ int performOps(Stack *s, token op)
 					ret = lside / rside;
 			}
 			break;
+		case '%':
+			{
+				if(rside == 0)
+				{
+					throwErr(divZero);
+					if (lside == 0)
+						ret = NAN;
+					else
+						ret = INFINITY;
+					err = -1;
+				}
+				else
+				{
+					ret = (int)(lside / rside);
+					ret = lside - (ret * rside);
+				}
+			}
+			break;
+		case '+':
+			{
+				ret = lside + rside;
+			}
+			break;
+		case '-':
+			{
+				ret = lside - rside;
+			}
+			break;
 		
 	}
 	stackPush(s, numbertoString(ret));
