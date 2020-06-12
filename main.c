@@ -505,7 +505,7 @@ int convertToTokens(char *str, char *(**tokensRef))
 	}
 	while((ch = *ptr++))
 	{
-		if(findType(ch) == invalid) 
+		if(findType(ch) == invalid) /* Stop tokenizing when we encounter an invalid character */
 			break;
 
 		token newToken = NULL;
@@ -523,13 +523,13 @@ int convertToTokens(char *str, char *(**tokensRef))
 								|| typeOfToken(tokens[numTokens-1]) == lparen
 								|| typeOfToken(tokens[numTokens-1]) == argsep)))
 					{
-
+                                                /* Assemble an n-character (plus null-terminator) number token */
 						{
 							int len = 1;
 							bool hasDecimal = false;
 							bool hasExponent = false;
 
-							if(findType(ch) == decimal) 
+							if(findType(ch) == decimal) /* Allow numbers to start with decimal */
 							{
 								//printf("Decimal\n");
 								hasDecimal = true;
@@ -537,12 +537,12 @@ int convertToTokens(char *str, char *(**tokensRef))
 								tmpToken[0] = '0';
 								tmpToken[1] = '.';
 							}
-							else 
+							else  /* Numbers that do not start with decimal */
 							{
 								tmpToken[len-1] = ch;
 							}
 
-							
+							/* Assemble rest of number */
 							for(; /* Don't change len */
 								*ptr /* There is a next character and it is not null */
 								&& len <= prefs.maxtokenlength
