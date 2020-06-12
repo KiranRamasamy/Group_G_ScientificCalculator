@@ -124,47 +124,6 @@ number constructNum(token str)
 	return result;
 }
 
-
-void stackPushAssess(Stack *s, token val)
-{
-	if(prefs.display.postfix)
-		printf("\t%s\n", val);
-
-	switch(typeOfToken(val))
-	{
-		case function:
-			{
-				if (performFuncs(s, val) < 0)
-					return;
-			}
-			break;
-		case expop:
-		case multop:
-		case addop:
-			{
-				if(stackSize(s) >= 2)
-				{				
-					if (performOps(s, val) < 0)
-						return;
-								
-				}
-				else
-				{
-					stackPush(s, val);
-				}
-			}
-			break;
-		case value:
-			{
-				stackPush(s, val);
-			}
-			break;
-		default:
-			break;
-	}
-}
-
-
 Symbol findType(char ch)
 {
 	Symbol result;
@@ -270,6 +229,88 @@ Symbol findType(char ch)
 	}
 	return result;
 }
+
+Symbol typeOfToken(token tk)
+{
+	if (!tk)
+         {
+		return invalid;
+         }
+	Symbol ret = findType(*tk);
+	switch(ret)
+	{
+		case text:
+			if(ifIsFunc(tk))
+                         {
+				ret = function;
+                         }
+			else if(ifIsSpecialVal(tk))
+                         {
+				ret = value;
+                         }
+			else
+                         {
+				ret = identifier;
+                         }
+			break;
+		case addop:
+			if(*tk == '-' && strlen(tk) > 1)
+                          {
+				ret = typeOfToken(tk+1);
+                          }
+			break;
+		case decimal:
+		case digit:
+			ret = value;
+			break;
+		default:
+			break;
+	}
+	return ret;
+}
+
+
+void stackPushAssess(Stack *s, token val)
+{
+	if(prefs.display.postfix)
+		printf("\t%s\n", val);
+
+	switch(typeOfToken(val))
+	{
+		case function:
+			{
+				if (performFuncs(s, val) < 0)
+					return;
+			}
+			break;
+		case expop:
+		case multop:
+		case addop:
+			{
+				if(stackSize(s) >= 2)
+				{				
+					if (performOps(s, val) < 0)
+						return;
+								
+				}
+				else
+				{
+					stackPush(s, val);
+				}
+			}
+			break;
+		case value:
+			{
+				stackPush(s, val);
+			}
+			break;
+		default:
+			break;
+	}
+}
+
+
+
 
 token numbertoString(number num)
 {
@@ -483,7 +524,7 @@ else if(strncmp(function, "min", 3) == 0)
 	stackPush(s, numbertoString(result));
 	return 0;
 }	
-}
+
 
 int performOps(Stack *s, token op)
 {
@@ -554,50 +595,13 @@ int performOps(Stack *s, token op)
 	return err;
 }
 
-Symbol typeOfToken(token tk)
-{
-	if (!tk)
-         {
-		return invalid;
-         }
-	Symbol ret = findType(*tk);
-	switch(ret)
-	{
-		case text:
-			if(ifIsFunc(tk))
-                         {
-				ret = function;
-                         }
-			else if(ifIsSpecialVal(tk))
-                         {
-				ret = value;
-                         }
-			else
-                         {
-				ret = identifier;
-                         }
-			break;
-		case addop:
-			if(*tk == '-' && strlen(tk) > 1)
-                          {
-				ret = typeOfToken(tk+1);
-                          }
-			break;
-		case decimal:
-		case digit:
-			ret = value;
-			break;
-		default:
-			break;
-	}
-	return ret;
-}
+
 
 int convertToTokens(char *str, char *(**tokensRef))
 {
 	int i = 0;
 	char** tokens = NULL;
-        char ** temp = NULL;
+    char ** tmp = NULL;
 	char* ptr = str;
 	char ch = '\0';
 	int numTokens = 0;
@@ -653,7 +657,7 @@ int convertToTokens(char *str, char *(**tokensRef))
 								&& (findType(*ptr) == digit /* The next character is a digit */
 								 	|| ((findType(*ptr) == decimal /* Or the next character is a decimal */
 								 		&& hasDecimal == 0)) /* But we have not added a decimal */
-								 	|| ((*ptr == 'E' || *ptr == 'e') /* Or the next character is an exponent 
+								 	|| ((*ptr == 'E' || *ptr == 'e') /* Or the next character is an exponent */
 								 		&& hasExponent == false) /* But we have not added an exponent yet */
 								|| ((*ptr == '+' || *ptr == '-') && hasExponent == true)); /* Exponent with sign */
 								++len)
