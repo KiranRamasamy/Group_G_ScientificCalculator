@@ -119,6 +119,16 @@ token numbertoString(number num)
 	return str;
 }
 
+number convertToRad(number degrees)
+{
+	return degrees * PI / 180.0;
+}
+
+number convertToDeg(number radians)
+{
+	return radians * 180.0 / PI;
+}
+
 int performFuncs(Stack *s, token function)
 {
 if (stackSize(s) == 0)
