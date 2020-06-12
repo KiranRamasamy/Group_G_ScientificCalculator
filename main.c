@@ -68,17 +68,17 @@ char* getDataConsole(FILE* stream)
 		char ch = EOF;
 		int pos = 0;
 
-		
+		/* Read input characters one by one and resizing the buffer as necessary*/
 		while((ch = getchar()) != EOF && ch != '\n')
 		{
 			bufferMemory[pos++] = ch;
-			if(pos == size) 
+			if(pos == size) /* Next character to be inserted needs more memory*/
 			{
 				size = pos + maxlen;
 				bufferMemory = (char*)realloc(bufferMemory, size);
 			}
 		}
-		bufferMemory[pos] = '\0';
+		bufferMemory[pos] = '\0'; /*Null-terminate the completed string */
 	}
 	return bufferMemory;
 }
@@ -91,7 +91,7 @@ inline unsigned int toDigit(char ch)
 number constructNum(token str)
 {
 	number result = 0;
-	result = strtod(str, NULL); //strtod for string to float (double)
+	result = strtod(str, NULL); /*strtod for string to float (double)*/
 	return result;
 }
 
@@ -787,15 +787,18 @@ bool postfix(token *tokens, int numTokens, Stack *output)
 	stackInit(&intermediate, numTokens);
 for(i = 0; i < numTokens; i++)
 	{
+		/*Shunting yard algorithm concept is used*/
 		switch(typeOfToken(tokens[i]))
 		{
 			case value:
 				{
-					stackPushAssess(output, tokens[i]); //adding to stack if token is number
+					/*If the token is a number or value, then add it to the output queue*/
+					stackPushAssess(output, tokens[i]); 
 				}
 				break;
 			case function:
 				{
+					/*If the token is a function token, then push it onto the stack*/
 					while(stackSize(&operators) > 0
 						&& (typeOfToken(tokens[i]) != lparen)
 						&& ((decidePrecedence(tokens[i], (char*)stackTop(&operators)) <= 0)))
@@ -804,11 +807,15 @@ for(i = 0; i < numTokens; i++)
 						stackPush(&intermediate, stackTop(output));
 					}
 
-					stackPush(&operators, tokens[i]);//token is function token
+					stackPush(&operators, tokens[i]);
 				}
 				break;
 				case argsep:
 				{
+					/*If the token is a function argument separator such as comma, until the token at the top of the stack is a left
+					 paren, pop operators off the stack onto the output queue. If no left paren encountered, either separator
+					 was misplaced or parens mismatched and error will be thrown*/
+					 
 					while(stackSize(&operators) > 0
 						&& typeOfToken((token)stackTop(&operators)) != lparen
 						&& stackSize(&operators) > 1)
@@ -824,6 +831,10 @@ for(i = 0; i < numTokens; i++)
 			case multop:
 			case expop:
 				{
+					
+					/*If the token is an operator, op1, then, while there is an operator token, op2, at the top of the stack, and
+					 either op1 is left-associative and its Precedence is less than or equal to that of op2, or op1 is right-associative
+					 and its Precedence is less than that of op2, pop op2 off the stack, onto the output queue and push op1 onto the stack*/
 	
 					while(stackSize(&operators) > 0
 						&& (typeOfToken((char*)stackTop(&operators)) == addop || typeOfToken((char*)stackTop(&operators)) == multop || typeOfToken((char*)stackTop(&operators)) == expop)
@@ -840,7 +851,7 @@ for(i = 0; i < numTokens; i++)
 				break;
 			case lparen:
 				{
-
+					/*If the token is a left paren, then push it onto the stack*/
 					if (typeOfToken(stackTop(&operators)) == function)
 						stackPush(output, FUNCTIONSEPARATOR);
 					stackPush(&operators, tokens[i]);
@@ -848,7 +859,10 @@ for(i = 0; i < numTokens; i++)
 				break;
 			case rparen:
 				{
-					
+					/*If the token is a right paren, until the token at the top of the stack is a left paren, pop operators off the stack onto the output 
+					queue, pop the left paren from the stack, but not onto the output queue and if the stack runs out without finding a left paren, 
+					then there are mismatched parens and error will be thrown*/
+
 					while(stackSize(&operators) > 0
 						&& typeOfToken((token)stackTop(&operators)) != lparen
 						&& stackSize(&operators) > 1)
@@ -876,6 +890,10 @@ for(i = 0; i < numTokens; i++)
 				break;
 		}
 	}
+	
+	/*When there are no more tokens to read, while there are still operator tokens on the stack, if the operator token on the top of the stack is a paren, 
+	then there are mismatched parens which gives error and pop the operator onto the output queue*/
+	
 	while(stackSize(&operators) > 0)
 	{
 		if(typeOfToken((token)stackTop(&operators)) == lparen)
@@ -887,8 +905,10 @@ for(i = 0; i < numTokens; i++)
 		stackPushAssess(output, stackPop(&operators));
 		stackPush(&intermediate, stackTop(output));
 	}
+	/*popping result from intermediate stack*/
 	stackPop(&intermediate);
-	// free remaining intermediate results
+	/*free remaining intermediate results*/
+	
 	while (stackSize(&intermediate) > 0)
 	{
 		token s = stackPop(&intermediate);
