@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <math.h> 
 #include <getopt.h>
-#include "stack.h"
+#include "stack.c"
 
 #define bool char
 #define true 1
