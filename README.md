@@ -28,7 +28,7 @@ The developer manual is available [here](https://github.com/tejaswinitummala/Gro
 
 # License
 
-
+This project is licensed under the GPL 3.0 License - see the [LICENSE.md](https://github.com/tejaswinitummala/Group_G_ScientificCalculator/blob/dev/LICENSE) file for details
 
 # Acknowledgements
 
