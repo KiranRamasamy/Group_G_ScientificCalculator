@@ -6,6 +6,7 @@ In our project we are developing a Scientific calculator which evaluate all line
 # Requirements
 
 The client gives expressions as inputs using “Files”. The file given by the client is read, analyzed, evaluated and the results are given back in the same file. The client requirements are as follows:
+
 1.The system should perform arithmetic operations such as Addition, Subtraction, Multiplication, Division, Modulus, Exponent.
 2.The system should perform basic math function such as Absolute value, Square root, Cube root, Log value.
 3.The system should perform trigonometric functions such as Sine, Cosine, Tangent , Arcsine, Arccos and Arctan.
