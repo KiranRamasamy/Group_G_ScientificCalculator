@@ -386,6 +386,31 @@ char* getDataConsole(FILE* stream)
 	return bufferMemory;
 }
 
+/*char* getDataFile(FILE* stream)
+{
+	unsigned int maxlen = 128, size = 128;
+	char* bufferMemory = (char*)malloc(maxlen);
+
+	if(bufferMemory != NULL) 
+	{
+		char ch = EOF;
+		int pos = 0;
+
+		
+		while((ch = fgetc(stream)) != EOF && ch != '\n')
+		{
+			bufferMemory[pos++] = ch;
+			if(pos == size) 
+			{
+				size = pos + maxlen;
+				bufferMemory = (char*)realloc(bufferMemory, size);
+			}
+		}
+		bufferMemory[pos] = '\0'; 
+	}
+	return bufferMemory;
+}*/
+
 
 Symbol findType(char ch)
 {
