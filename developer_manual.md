@@ -27,3 +27,8 @@ The client gives expressions as inputs using “Files”. The file given by the 
 
 10.The system should write the evaluated output to the same file which was given as input.
 
+# Program Flow
+
+![flow chart](https://user-images.githubusercontent.com/65427344/85090426-16eb4080-b1b3-11ea-8878-5fa4f53d2555.PNG)
+
+
