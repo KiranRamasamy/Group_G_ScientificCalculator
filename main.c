@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <math.h> 
 #include <getopt.h>
-#include "stack.h"
+#include "stack.c"
 
 #define bool char
 #define true 1
@@ -1050,7 +1050,25 @@ int main(int argc, char *argv[])
 	char st[1000];
 	char fname[30];
         char an[100] = "Answers: ";
-	printf("Enter the filename:");
+        printf("\n**************************************************************************************************************************************************************************************************************\n");
+        printf("\t\t\t\t\t\t\t\t\t\t\t\tSCIENTIFIC CALCULATOR");
+        printf("\n**************************************************************************************************************************************************************************************************************\n");
+
+	printf("\n\n\n\t\t\t\t\t\t\t\t\t\t  <<- OPERATIONS THAT CAN BE PERFORMED ->>");
+        printf("\n\t\t\t\t\t\t\t  ------------------------------------------------------------------------------------------- ");
+        printf("\n\t\t\t\t\t\t\t | 1.Addition +               | 2.Subtraction -             | 3.Multiplication *             |");
+        printf("\n\t\t\t\t\t\t\t | 4.Division /               | 5.Modulus                   | 6.Exponent ^                   |");
+        printf("\n\t\t\t\t\t\t\t | 7.Absolute Value- abs()    | 8.sine sin()                | 9.cosin cos()                  |");
+        printf("\n\t\t\t\t\t\t\t | 10.tangent tan()           | 11.Logorithm log()          | 12.Average avg()               |");
+        printf("\n\t\t\t\t\t\t\t | 13.Mean mean()             | 14.Median median()          | 15.Variance var()              |");
+        printf("\n\t\t\t\t\t\t\t | 16.Squart Root sqrt()      | 17.Cube Root cbrt()         | 18.e^x                         |");
+        printf("\n\t\t\t\t\t\t\t | 19.Minimum Value min()     | 20.Maximum value max()      | 21. Floor floor()              |");
+        printf("\n\t\t\t\t\t\t\t | 22.Ceil ceil()             | 23.Arcsine asin()or arcsin()| 24. Arccos acos() or acrccos() |");
+        printf("\n\t\t\t\t\t\t\t | 25.Arctan atan()or arctan()| 26.Summation sum()          | 27. quit                       |");
+        printf("\n\t\t\t\t\t\t\t  --------------------------------------------------------------------------------------------");
+
+	printf("\nExample of an expression: (12+3)*5+(7/2)*log(2)");
+	printf("\nEnter the filename:");
         scanf("%s",fname);
         char* filename = fname;
 	char* str = NULL;	
@@ -1077,26 +1095,8 @@ int main(int argc, char *argv[])
                     }
           }
 
-        printf("\n**************************************************************************************************************************************************************************************************************\n");
-        printf("\t\t\t\t\t\t\t\t\t\t\t\tSCIENTIFIC CALCULATOR");
-        printf("\n**************************************************************************************************************************************************************************************************************\n");
-
-	printf("\n\n\n\t\t\t\t\t\t\t\t\t\t  <<- OPERATIONS THAT CAN BE PERFORMED ->>");
-        printf("\n\t\t\t\t\t\t\t  ------------------------------------------------------------------------------------------- ");
-        printf("\n\t\t\t\t\t\t\t | 1.Addition +               | 2.Subtraction -             | 3.Multiplication *             |");
-        printf("\n\t\t\t\t\t\t\t | 4.Division /               | 5.Modulus                   | 6.Exponent ^                   |");
-        printf("\n\t\t\t\t\t\t\t | 7.Absolute Value- abs()    | 8.sine sin()                | 9.cosin cos()                  |");
-        printf("\n\t\t\t\t\t\t\t | 10.tangent tan()           | 11.Logorithm log()          | 12.Average avg()               |");
-        printf("\n\t\t\t\t\t\t\t | 13.Mean mean()             | 14.Median median()          | 15.Variance var()              |");
-        printf("\n\t\t\t\t\t\t\t | 16.Squart Root sqrt()      | 17.Cube Root cbrt()         | 18.e^x                         |");
-        printf("\n\t\t\t\t\t\t\t | 19.Minimum Value min()     | 20.Maximum value max()      | 21. Floor floor()              |");
-        printf("\n\t\t\t\t\t\t\t | 22.Ceil ceil()             | 23.Arcsine asin()or arcsin()| 24. Arccos acos() or acrccos() |");
-        printf("\n\t\t\t\t\t\t\t | 25.Arctan atan()or arctan()| 26.Summation sum()          | 27. quit                       |");
-        printf("\n\t\t\t\t\t\t\t  --------------------------------------------------------------------------------------------");
-
-	printf("\nExample of an expression: (12+3)*5+(7/2)*log(2)");
-        printf("\nEnter the expression you need to evaluate:");
-		
+        
+        		
 	fp = fopen(filename, "r");
         fpoutput = fopen(filename, "a");
         fprintf(fpoutput," \n \n %s",an);
