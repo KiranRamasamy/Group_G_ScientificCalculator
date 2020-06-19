@@ -2,8 +2,9 @@
 #include <string.h>
 #include <stdlib.h>
 #include <math.h> 
-#include <getopt.h>
 #include "stack.c"
+#include <getopt.h>
+
 
 #define bool char
 #define true 1
@@ -1136,7 +1137,7 @@ int main(int argc, char *argv[])
 			if (!rflag)
 			printf("\t= ");
 
-			printf("%s\n", (char*)stackTop(&expr));
+			
                         output = (char*)stackTop(&expr);
                         fpoutput = fopen(filename, "a");
                         fprintf(fpoutput," \n %s",output);
@@ -1165,6 +1166,31 @@ int main(int argc, char *argv[])
 		
 		str = getDataFile(fp);
 		//str = getDataConsole(stdin); /*release 1 code*/
+ int index, i;
+
+    /* Set default index */
+    index = -1;
+
+    /* Find last index of non-white space character */
+    i = 0;
+    while(str[i] != '\0')
+    {
+        if(str[i] != ' ' && str[i] != '\t' && str[i] != '\n')
+        {
+            index= i;
+        }
+
+        i++;
+    }
+
+    /* Mark next character to last non-white space character as NULL */
+    str[index + 1] = '\0';
+
+
+
+
+
+		sleep(1);
 		printf("%s",str);
 		
 	}
