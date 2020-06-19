@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <math.h> 
 #include <getopt.h>
-#include "stack.c"
+#include "stack.h"
 
 #define bool char
 #define true 1
@@ -360,33 +360,8 @@ int performOps(Stack *s, token op)
 	return err;
 }
 
-
-char* getDataConsole(FILE* stream)
-{
-	unsigned int maxlen = 128, size = 128;
-	char* bufferMemory = (char*)malloc(maxlen);
-
-	if(bufferMemory != NULL) /* NULL if malloc() fails */
-	{
-		char ch = EOF;
-		int pos = 0;
-
-		/* Read input characters one by one and resizing the buffer as necessary*/
-		while((ch = getchar()) != EOF && ch != '\n')
-		{
-			bufferMemory[pos++] = ch;
-			if(pos == size) /* Next character to be inserted needs more memory*/
-			{
-				size = pos + maxlen;
-				bufferMemory = (char*)realloc(bufferMemory, size);
-			}
-		}
-		bufferMemory[pos] = '\0'; /*Null-terminate the completed string */
-	}
-	return bufferMemory;
-}
-
-/*char* getDataFile(FILE* stream)
+/*Release 1 code*/
+/*char* getDataConsole(FILE* stream)
 {
 	unsigned int maxlen = 128, size = 128;
 	char* bufferMemory = (char*)malloc(maxlen);
@@ -397,7 +372,7 @@ char* getDataConsole(FILE* stream)
 		int pos = 0;
 
 		
-		while((ch = fgetc(stream)) != EOF && ch != '\n')
+		while((ch = getchar()) != EOF && ch != '\n')
 		{
 			bufferMemory[pos++] = ch;
 			if(pos == size) 
@@ -410,6 +385,33 @@ char* getDataConsole(FILE* stream)
 	}
 	return bufferMemory;
 }*/
+
+/*Release 2 code*/
+
+char* getDataFile(FILE* stream)
+{
+	unsigned int maxlen = 128, size = 128;
+	char* bufferMemory = (char*)malloc(maxlen);
+
+	if(bufferMemory != NULL) /* NULL if malloc() fails */
+	{
+		char ch = EOF;
+		int pos = 0;
+
+		/* Read input characters one by one and resizing the buffer as necessary*/
+		while((ch = fgetc(stream)) != EOF && ch != '\n')
+		{
+			bufferMemory[pos++] = ch;
+			if(pos == size) 
+			{
+				size = pos + maxlen;
+				bufferMemory = (char*)realloc(bufferMemory, size);
+			}
+		}
+		bufferMemory[pos] = '\0'; /*Null-terminate the completed string */
+	}
+	return bufferMemory;
+}
 
 
 Symbol findType(char ch)
@@ -1044,7 +1046,12 @@ for(i = 0; i < numTokens; i++)
 
 int main(int argc, char *argv[])
 {    
-    
+    FILE *fp;
+	char st[1000];
+	char fname[30];
+	printf("Enter the filename:");
+    scanf("%s",fname);
+    char* filename = fname;
 	char* str = NULL;	
 	char* prev_output = malloc(128);
 
@@ -1088,8 +1095,16 @@ int main(int argc, char *argv[])
 
 	printf("\nExample of an expression: (12+3)*5+(7/2)*log(2)");
         printf("\nEnter the expression you need to evaluate:");
+		
+		fp = fopen(filename, "r");
+		
+		    if (fp == NULL){
+        printf("Could not open file %s",filename);
+        return 1;
+    }
 	
-	str = getDataConsole(stdin);
+	str = getDataFile(fp);
+	//str = getDataConsole(stdin); /* Release 1 code */
 	printf("%s",str);
         while(str != NULL && strcmp(str, "quit") != 0)
 	{
@@ -1138,7 +1153,8 @@ int main(int argc, char *argv[])
 			
 	get_new_string:
 		
-		str = getDataConsole(stdin);
+		str = getDataFile(fp);
+		//str = getDataConsole(stdin); /*release 1 code*/
 		printf("%s",str);
 		
 	}
