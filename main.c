@@ -1086,7 +1086,8 @@ int main(int argc, char *argv[])
         printf("\n\t\t\t\t\t\t\t | 25.Arctan atan()or arctan()| 26.Summation sum()          | 27. quit                       |");
         printf("\n\t\t\t\t\t\t\t  --------------------------------------------------------------------------------------------");
 
-	printf("\nEnter the expression you need to evaluate:");
+	printf("\nExample of an expression: (12+3)*5+(7/2)*log(2)");
+        printf("\nEnter the expression you need to evaluate:");
 	
 	str = getDataConsole(stdin);
 	printf("%s",str);
