@@ -31,4 +31,25 @@ The client gives expressions as inputs using “Files”. The file given by the 
 
 ![flow chart](https://user-images.githubusercontent.com/65427344/85090426-16eb4080-b1b3-11ea-8878-5fa4f53d2555.PNG)
 
+1.	The above flowchart describes the complete flow of our program which supports standard mathematical operations and a set of functions. 
+
+2.	The user enters the ‘n’ number of expressions in a file. The expressions to be evaluated can be entered in standard infix syntax, with parentheses denoting nonstandard order of operations. 
+
+3.	The expressions are converted to tokens and are evaluated using the shunting yard algorithm. 
+
+4.	If the incoming token is a digit, push it to the output queue. 
+
+5.	If the incoming token is a left parenthesis, push it on the operator stack. 
+
+6.	If the incoming token is a right parenthesis: discard the right parenthesis, pop the stack tokens until we find a left parenthesis. Pop the left parenthesis and discard it. 
+
+7.	If the incoming token is an operator and the stack is empty or contains a left parenthesis on top, push the incoming operator onto the stack. 
+
+8.	If the incoming token is an operator and has either higher precedence than the operator on the top of the stack, or has the same precedence as the operator on the top of the stack and is right associative then push it on the stack. 
+
+9.	If the incoming token is an operator and has either lower precedence than the operator on the top of the stack, or has the same precedence as the operator on the top of the stack and is left associative then continue to pop the stack until this is not true. Then, push the incoming operator. 
+
+10.	At the end of the expression, pop all operators on the stack and push it to the output queue (No parentheses should remain). 
+
+11.	Finally, the evaluated result of each expression is written on the same file and given as output to the user.
 
