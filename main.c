@@ -1054,7 +1054,7 @@ int main(int argc, char *argv[])
         scanf("%s",fname);
         char* filename = fname;
 	char* str = NULL;	
-	char* prev_output = malloc(128);
+	char* output = malloc(128);
 
 	token* tokens = NULL;
 	int numTokens = 0;
