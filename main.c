@@ -1046,12 +1046,13 @@ for(i = 0; i < numTokens; i++)
 
 int main(int argc, char *argv[])
 {    
-    FILE *fp;
+        FILE *fp, *fpoutput;
 	char st[1000];
 	char fname[30];
+        char an[100] = "Answers: ";
 	printf("Enter the filename:");
-    scanf("%s",fname);
-    char* filename = fname;
+        scanf("%s",fname);
+        char* filename = fname;
 	char* str = NULL;	
 	char* prev_output = malloc(128);
 
@@ -1096,7 +1097,10 @@ int main(int argc, char *argv[])
 	printf("\nExample of an expression: (12+3)*5+(7/2)*log(2)");
         printf("\nEnter the expression you need to evaluate:");
 		
-		fp = fopen(filename, "r");
+	fp = fopen(filename, "r");
+        fpoutput = fopen(filename, "a");
+        fprintf(fpoutput," \n \n %s",an);
+        fclose(fpoutput);
 		
 		    if (fp == NULL){
         printf("Could not open file %s",filename);
@@ -1115,6 +1119,8 @@ int main(int argc, char *argv[])
 			numTokens = convertToTokens(str, &tokens);
 			free(str);
 			str = NULL;
+            
+                        /*Convert to postfix*/
 
 			stackInit(&expr, numTokens);
 			
@@ -1130,9 +1136,13 @@ int main(int argc, char *argv[])
 			if (!rflag)
 			printf("\t= ");
 
-			 prev_output = (char*)stackTop(&expr);
-
 			printf("%s\n", (char*)stackTop(&expr));
+                        output = (char*)stackTop(&expr);
+                        fpoutput = fopen(filename, "a");
+                        fprintf(fpoutput," \n %s",output);
+                        fclose(fpoutput);
+                        printf("%s\n", (char*)stackTop(&expr));
+
 			for (i=0; i< numTokens; i++)
 			{
 			if (tokens[i] == stackTop(&expr))
