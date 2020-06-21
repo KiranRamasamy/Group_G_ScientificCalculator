@@ -27,6 +27,22 @@ The client gives expressions as inputs using “Files”. The file given by the 
 
 10.The system should write the evaluated output to the same file which was given as input.
 
+# How our software works
+
+Computation of the expression begins with the tokenization of the input string, maintaining original infix order. They are then converted to postfix notation for evaluation using the shunting-yard algorithm. As operators are pushed onto the postfix stack, terms are evaluated.
+
+# Shunting yard algorithm
+
+The shunting-yard algorithm is a method for parsing mathematical expressions specified in infix notation by producing a postfix notation string. For the conversion there are two main components, the operator stack and the output queue. The operator stack acts as storage structure to hold the operators and they are not added to the output queue until both of its operands have appeared. The algorithm assigns to each operator its correct operands, taking into account the order of precedence.
+During this process the program reads each symbol in order and does something based on that symbol i.e., All numbers are pushed to the output queue when they are read and at the end of reading the expression, it pops all operators off the operator stack and onto the output queue. The final number on the output queue is the result.
+
+# Main Features of the software
+
+Early evaluation
+• There is no separate evaluation step. Elements are evaluated on the postfix stack as soon as all terms are available. Due to the nature of the shunting-yard algorithm, as soon as an operator is pushed, it can be evaluated.
+• When our StackPushAssesss() function sees an operator, rather than pushing , it pops its operands, runs the computation, and pushes the result.
+• This means that once the input expression has been converted to postfix notation, the only element on the postfix stack is the result of the calculation.
+
 # Program Flow
 
 ![flow chart](https://user-images.githubusercontent.com/65427344/85090426-16eb4080-b1b3-11ea-8878-5fa4f53d2555.PNG)
