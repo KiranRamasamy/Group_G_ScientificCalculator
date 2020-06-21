@@ -68,7 +68,7 @@ typedef enum
 	inputMissing,
 } Error;
 
-void throwErr(Error err)
+void throw_err(Error err)
 {
 	char* msg;
 	switch(err)
@@ -94,14 +94,14 @@ inline unsigned int toDigit(char ch)
 	return ch - '0';
 }
 
-number constructNum(token str)
+number construct_num(token str)
 {
 	number result = 0;
 	result = strtod(str, NULL); /*strtod for string to float (double)*/
 	return result;
 }
 
-token numbertoString(number num)
+token number_to_string(number num)
 {
 	int len = 0;
 	int precision = MAXPRECISION;
@@ -122,34 +122,34 @@ token numbertoString(number num)
 	return str;
 }
 
-number convertToRad(number degrees)
+number convert_to_rad(number degrees)
 {
 	return degrees * PI / 180.0;
 }
 
-number convertToDeg(number radians)
+number convert_to_deg(number radians)
 {
 	return radians * 180.0 / PI;
 }
 
-int performFuncs(Stack *s, token function)
+int perform_funcs(Stack *s, token function)
 {
 if (stackSize(s) == 0)
 	{
 		//throwErr here with missing input
-		stackPush(s, numbertoString(NAN));
+		stackPush(s, number_to_string(NAN));
 		return -1;
 	}
 	else if (stackSize(s) == 1 && strcmp(stackTop(s), FUNCTIONSEPARATOR) == 0)
 	{
 		stackPop(s);
 		//throwErr here with missing input
-		stackPush(s, numbertoString(NAN));
+		stackPush(s, number_to_string(NAN));
 		return -1;
 	}
 	
 	token input = (token)stackPop(s);
-	number num = constructNum(input);
+	number num = construct_num(input);
 	number result = num;
 	number counter = 0;
 
@@ -160,20 +160,20 @@ if (stackSize(s) == 0)
 	else if(strncmp(function, "ceil", 4) == 0)
 		result = ceil(num);
 	else if(strncmp(function, "sin", 3) == 0)
-		result = !prefs.mode.degrees ? sin(num) : sin(convertToRad(num));
+		result = !prefs.mode.degrees ? sin(num) : sin(convert_to_rad(num));
 	else if(strncmp(function, "cos", 3) == 0)
-		result = !prefs.mode.degrees ? cos(num) : cos(convertToRad(num));
+		result = !prefs.mode.degrees ? cos(num) : cos(convert_to_rad(num));
 	else if(strncmp(function, "tan", 3) == 0)
-		result = !prefs.mode.degrees ? tan(num) : tan(convertToRad(num));
+		result = !prefs.mode.degrees ? tan(num) : tan(convert_to_rad(num));
 	else if(strncmp(function, "arcsin", 6) == 0
 		 || strncmp(function, "asin", 4) == 0)
-		result = !prefs.mode.degrees ? asin(num) : convertToDeg(asin(num));
+		result = !prefs.mode.degrees ? asin(num) : convert_to_deg(asin(num));
 	else if(strncmp(function, "arccos", 6) == 0
 		 || strncmp(function, "acos", 4) == 0)
-		result = !prefs.mode.degrees ? acos(num) : convertToDeg(acos(num));
+		result = !prefs.mode.degrees ? acos(num) : convert_to_deg(acos(num));
 	else if(strncmp(function, "arctan", 6) == 0
 		 || strncmp(function, "atan", 4) == 0)
-		result = !prefs.mode.degrees ? atan(num) : convertToDeg(atan(num));
+		result = !prefs.mode.degrees ? atan(num) : convert_to_deg(atan(num));
 	else if(strncmp(function, "sqrt", 4) == 0)
 		result = sqrt(num);
 	else if(strncmp(function, "cbrt", 4) == 0)
@@ -187,7 +187,7 @@ else if(strncmp(function, "min", 3) == 0)
 		while (stackSize(s) > 0 && strcmp(stackTop(s), FUNCTIONSEPARATOR) != 0)
 		{
 			input = (token)stackPop(s);
-			num = constructNum(input);
+			num = construct_num(input);
 			if (num < result)
 				result = num;
 		}
@@ -197,7 +197,7 @@ else if(strncmp(function, "min", 3) == 0)
 		while (stackSize(s) > 0 && strcmp(stackTop(s), FUNCTIONSEPARATOR) != 0)
 		{
 			input = (token)stackPop(s);
-			num = constructNum(input);
+			num = construct_num(input);
 			if (num > result)
 				result = num;
 		}
@@ -207,7 +207,7 @@ else if(strncmp(function, "min", 3) == 0)
 		while (stackSize(s) > 0  && strcmp(stackTop(s), FUNCTIONSEPARATOR) != 0)
 		{
 			input = (token)stackPop(s);
-			num = constructNum(input);
+			num = construct_num(input);
 			result += num;
 		}
 	}
@@ -218,7 +218,7 @@ else if(strncmp(function, "min", 3) == 0)
 		while (stackSize(s) > 0  && strcmp(stackTop(s), FUNCTIONSEPARATOR) != 0)
 		{
 			input = (token)stackPop(s);
-			num = constructNum(input);
+			num = construct_num(input);
 			result += num;
 			counter++;
 		}
@@ -234,8 +234,8 @@ else if(strncmp(function, "min", 3) == 0)
 		while (stackSize(s) > 0  && strcmp(stackTop(s), FUNCTIONSEPARATOR) != 0)
 		{
 			input = (token)stackPop(s);
-			num = constructNum(input);
-			while (stackSize(&tmp) > 0 && constructNum(stackTop(&tmp)) < num)
+			num = construct_num(input);
+			while (stackSize(&tmp) > 0 && construct_num(stackTop(&tmp)) < num)
 			{
 				stackPush(&safe, stackPop(&tmp));
 			}
@@ -253,7 +253,7 @@ else if(strncmp(function, "min", 3) == 0)
 			stackPop(&tmp);
 			counter--;
 		}
-		result = constructNum(stackPop(&tmp));
+		result = construct_num(stackPop(&tmp));
 		while (stackSize(&tmp) > 0)
 		{
 			stackPop(&tmp);
@@ -271,7 +271,7 @@ else if(strncmp(function, "min", 3) == 0)
 		{
 			input = (token)stackPop(s);
 			stackPush(&tmp, input);
-			num = constructNum(input);
+			num = construct_num(input);
 			mean += num;
 			counter++;
 		}
@@ -280,7 +280,7 @@ else if(strncmp(function, "min", 3) == 0)
 		while (stackSize(&tmp) > 0)
 		{
 			input = (token)stackPop(&tmp);
-			num = constructNum(input)-mean;
+			num = construct_num(input)-mean;
 			result += pow(num,2);
 		}
 		result /= counter;
@@ -288,17 +288,17 @@ else if(strncmp(function, "min", 3) == 0)
 	}
 	if (strcmp(stackTop(s), FUNCTIONSEPARATOR) == 0)
 		stackPop(s);
-	stackPush(s, numbertoString(result));
+	stackPush(s, number_to_string(result));
 	return 0;
 }	
 
-int performOps(Stack *s, token op)
+int perform_ops(Stack *s, token op)
 {
 	int err = 0;
 	token roperand = (token)stackPop(s);
 	token loperand = (token)stackPop(s);
-	number lside = constructNum(loperand);
-	number rside = constructNum(roperand);
+	number lside = construct_num(loperand);
+	number rside = construct_num(roperand);
 	number ret;
 	switch(*op)
 	{
@@ -316,7 +316,7 @@ int performOps(Stack *s, token op)
 			{
 				if(rside == 0)
 				{
-					throwErr(divZero);
+					throw_err(divZero);
 					if (lside == 0)
 						ret = NAN;
 					else
@@ -331,7 +331,7 @@ int performOps(Stack *s, token op)
 			{
 				if(rside == 0)
 				{
-					throwErr(divZero);
+					throw_err(divZero);
 					if (lside == 0)
 						ret = NAN;
 					else
@@ -357,12 +357,12 @@ int performOps(Stack *s, token op)
 			break;
 		
 	}
-	stackPush(s, numbertoString(ret));
+	stackPush(s, number_to_string(ret));
 	return err;
 }
 
 /*Release 1 code*/
-/*char* getDataConsole(FILE* stream)
+/*char* get_data_console(FILE* stream)
 {
 	unsigned int maxlen = 128, size = 128;
 	char* bufferMemory = (char*)malloc(maxlen);
@@ -389,7 +389,7 @@ int performOps(Stack *s, token op)
 
 /*Release 2 code*/
 
-char* getDataFile(FILE* stream)
+char* get_data_file(FILE* stream)
 {
 	unsigned int maxlen = 128, size = 128;
 	char* bufferMemory = (char*)malloc(maxlen);
@@ -415,7 +415,7 @@ char* getDataFile(FILE* stream)
 }
 
 
-Symbol findType(char ch)
+Symbol find_type(char ch)
 {
 	Symbol result;
 	switch(ch)
@@ -521,7 +521,7 @@ Symbol findType(char ch)
 	return result;
 }
 
-bool ifIsFunc(token tk)
+bool if_is_func(token tk)
 {
 	return (strncmp(tk, "abs", 3) == 0
 		|| strncmp(tk, "floor", 5) == 0
@@ -548,26 +548,26 @@ bool ifIsFunc(token tk)
 		|| strncmp(tk, "exp", 3) == 0);
 }
 
-bool ifIsSpecialVal(token tk)
+bool if_is_specialval(token tk)
 {
 	return (strncmp(tk, "nan", 3) == 0 || strncmp(tk, "inf", 3) == 0);
 }
 
-Symbol typeOfToken(token tk)
+Symbol type_of_token(token tk)
 {
 	if (!tk)
          {
 		return invalid;
          }
-	Symbol ret = findType(*tk);
+	Symbol ret = find_type(*tk);
 	switch(ret)
 	{
 		case text:
-			if(ifIsFunc(tk))
+			if(if_is_func(tk))
                          {
 				ret = function;
                          }
-			else if(ifIsSpecialVal(tk))
+			else if(if_is_specialval(tk))
                          {
 				ret = value;
                          }
@@ -579,7 +579,7 @@ Symbol typeOfToken(token tk)
 		case addop:
 			if(*tk == '-' && strlen(tk) > 1)
                           {
-				ret = typeOfToken(tk+1);
+				ret = type_of_token(tk+1);
                           }
 			break;
 		case decimal:
@@ -592,7 +592,7 @@ Symbol typeOfToken(token tk)
 	return ret;
 }
 
-int convertToTokens(char *str, char *(**tokensRef))
+int convert_to_tokens(char *str, char *(**tokensRef))
 {
 	int i = 0;
 	char** tokens = NULL;
@@ -608,23 +608,23 @@ int convertToTokens(char *str, char *(**tokensRef))
 	}
 	while((ch = *ptr++))
 	{
-		if(findType(ch) == invalid) /* Stop tokenizing when we encounter an invalid character */
+		if(find_type(ch) == invalid) /* Stop tokenizing when we encounter an invalid character */
 			break;
 
 		token newToken = NULL;
 		tmpToken[0] = '\0';
-		switch(findType(ch))
+		switch(find_type(ch))
 		{
 			case addop:
                                {
                                       /* Check if this is a negative */
 					if(ch == '-'
 						&& (numTokens == 0
-							|| (typeOfToken(tokens[numTokens-1]) == addop
-								|| typeOfToken(tokens[numTokens-1]) == multop
-								|| typeOfToken(tokens[numTokens-1]) == expop
-								|| typeOfToken(tokens[numTokens-1]) == lparen
-								|| typeOfToken(tokens[numTokens-1]) == argsep)))
+							|| (type_of_token(tokens[numTokens-1]) == addop
+								|| type_of_token(tokens[numTokens-1]) == multop
+								|| type_of_token(tokens[numTokens-1]) == expop
+								|| type_of_token(tokens[numTokens-1]) == lparen
+								|| type_of_token(tokens[numTokens-1]) == argsep)))
 					{
                                                 /* Assemble an n-character (plus null-terminator) number token */
 						{
@@ -632,7 +632,7 @@ int convertToTokens(char *str, char *(**tokensRef))
 							bool hasDecimal = false;
 							bool hasExponent = false;
 
-							if(findType(ch) == decimal) /* Allow numbers to start with decimal */
+							if(find_type(ch) == decimal) /* Allow numbers to start with decimal */
 							{
 								//printf("Decimal\n");
 								hasDecimal = true;
@@ -649,15 +649,15 @@ int convertToTokens(char *str, char *(**tokensRef))
 							for(; /* Don't change len */
 								*ptr /* There is a next character and it is not null */
 								&& len <= prefs.maxtokenlength
-								&& (findType(*ptr) == digit /* The next character is a digit */
-								 	|| ((findType(*ptr) == decimal /* Or the next character is a decimal */
+								&& (find_type(*ptr) == digit /* The next character is a digit */
+								 	|| ((find_type(*ptr) == decimal /* Or the next character is a decimal */
 								 		&& hasDecimal == 0)) /* But we have not added a decimal */
 								 	|| ((*ptr == 'E' || *ptr == 'e') /* Or the next character is an exponent */
 								 		&& hasExponent == false) /* But we have not added an exponent yet */
 								|| ((*ptr == '+' || *ptr == '-') && hasExponent == true)); /* Exponent with sign */
 								++len)
 							{
-								if(findType(*ptr) == decimal)
+								if(find_type(*ptr) == decimal)
 									hasDecimal = true;
 								else if(*ptr == 'E' || *ptr == 'e')
 									hasExponent = true;
@@ -692,7 +692,7 @@ int convertToTokens(char *str, char *(**tokensRef))
 					bool hasDecimal = false;
 					bool hasExponent = false;
 
-					if(findType(ch) == decimal) /* Allow numbers to start with decimal */
+					if(find_type(ch) == decimal) /* Allow numbers to start with decimal */
 					{
 						/* printf("Decimal\n"); */
 						hasDecimal = true;
@@ -709,15 +709,15 @@ int convertToTokens(char *str, char *(**tokensRef))
 					for(; /* Don't change len */
 						*ptr /* There is a next character and it is not null */
 						&& len <= prefs.maxtokenlength
-						&& (findType(*ptr) == digit /* The next character is a digit */
-						 	|| ((findType(*ptr) == decimal /* Or the next character is a decimal */
+						&& (find_type(*ptr) == digit /* The next character is a digit */
+						 	|| ((find_type(*ptr) == decimal /* Or the next character is a decimal */
 						 		&& hasDecimal == 0)) /* But we have not added a decimal */
 						 	|| ((*ptr == 'E' || *ptr == 'e') /* Or the next character is an exponent */
 						 		&& hasExponent == false) /* But we have not added an exponent yet */
 						 	|| ((*ptr == '+' || *ptr == '-') && hasExponent == true)); /* Exponent with sign */
 						++len)
 					{
-						if(findType(*ptr) == decimal)
+						if(find_type(*ptr) == decimal)
 							hasDecimal = true;
 						else if(*ptr == 'E' || *ptr == 'e')
 							hasExponent = true;
@@ -734,7 +734,7 @@ int convertToTokens(char *str, char *(**tokensRef))
 				{
 					int len = 1;
 					tmpToken[0] = ch;
-					for(len = 1; *ptr && findType(*ptr) == text && len <= prefs.maxtokenlength; ++len)
+					for(len = 1; *ptr && find_type(*ptr) == text && len <= prefs.maxtokenlength; ++len)
 					{
 						tmpToken[len] = *ptr++;
 					}
@@ -788,10 +788,10 @@ int convertToTokens(char *str, char *(**tokensRef))
 	return numTokens;
 }
 
-bool leftAssociative(token op)
+bool left_associative(token op)
 {
 	bool ret = false;
-	switch(typeOfToken(op))
+	switch(type_of_token(op))
 	{
 		case addop:
 		case multop:
@@ -809,7 +809,7 @@ bool leftAssociative(token op)
 }
 
 
-int decidePrecedence(token op1, token op2)
+int decide_precedence(token op1, token op2)
 {
 	int ret = 0;
 
@@ -817,53 +817,53 @@ int decidePrecedence(token op1, token op2)
         {
 		ret = 1;
 	}
-	else if(typeOfToken(op1) == typeOfToken(op2)) 
+	else if(type_of_token(op1) == type_of_token(op2)) 
 	{
 		ret = 0;
 	 }  
-	else if(typeOfToken(op1) == addop
-			&& (typeOfToken(op2) == multop || typeOfToken(op2) == expop)) 
+	else if(type_of_token(op1) == addop
+			&& (type_of_token(op2) == multop || type_of_token(op2) == expop)) 
 	{
 		ret = -1;
 	}
-	else if(typeOfToken(op2) == addop
-			&& (typeOfToken(op1) == multop || typeOfToken(op1) == expop)) 
+	else if(type_of_token(op2) == addop
+			&& (type_of_token(op1) == multop || type_of_token(op1) == expop)) 
 	{
 		ret = 1;
 	}
-	else if(typeOfToken(op1) == multop
-			&& typeOfToken(op2) == expop) 
+	else if(type_of_token(op1) == multop
+			&& type_of_token(op2) == expop) 
 	{
 		ret = -1;
 	}
-	else if(typeOfToken(op1) == expop
-			&& typeOfToken(op2) == multop) 
+	else if(type_of_token(op1) == expop
+			&& type_of_token(op2) == multop) 
 	{
 		ret = 1;
 	}
-	else if (typeOfToken(op1) == function
-			&& (typeOfToken(op2) == addop || typeOfToken(op2) == multop || typeOfToken(op2) == expop || typeOfToken(op2) == lparen))
+	else if (type_of_token(op1) == function
+			&& (type_of_token(op2) == addop || type_of_token(op2) == multop || type_of_token(op2) == expop || type_of_token(op2) == lparen))
 	{
 		ret = 1;
 	}
-	else if ((typeOfToken(op1) == addop || typeOfToken(op1) == multop || typeOfToken(op1) == expop)
-			&& typeOfToken(op2) == function)
+	else if ((type_of_token(op1) == addop || type_of_token(op1) == multop || type_of_token(op1) == expop)
+			&& type_of_token(op2) == function)
 	{
 		ret = -1;
 	}
 	return ret;
 }
 
-void stackPushAssess(Stack *s, token val)
+void stack_push_assess(Stack *s, token val)
 {
 	if(prefs.display.postfix)
 		printf("\t%s\n", val);
 
-	switch(typeOfToken(val))
+	switch(type_of_token(val))
 	{
 		case function:
 			{
-				if (performFuncs(s, val) < 0)
+				if (perform_funcs(s, val) < 0)
 					return;
 			}
 			break;
@@ -873,7 +873,7 @@ void stackPushAssess(Stack *s, token val)
 			{
 				if(stackSize(s) >= 2)
 				{				
-					if (performOps(s, val) < 0)
+					if (perform_ops(s, val) < 0)
 						return;
 								
 				}
@@ -904,22 +904,22 @@ bool postfix(token *tokens, int numTokens, Stack *output)
 for(i = 0; i < numTokens; i++)
 	{
 		/*Shunting yard algorithm concept is used*/
-		switch(typeOfToken(tokens[i]))
+		switch(type_of_token(tokens[i]))
 		{
 			case value:
 				{
 					/*If the token is a number or value, then add it to the output queue*/
-					stackPushAssess(output, tokens[i]); 
+					stack_push_assess(output, tokens[i]); 
 				}
 				break;
 			case function:
 				{
 					/*If the token is a function token, then push it onto the stack*/
 					while(stackSize(&operators) > 0
-						&& (typeOfToken(tokens[i]) != lparen)
-						&& ((decidePrecedence(tokens[i], (char*)stackTop(&operators)) <= 0)))
+						&& (type_of_token(tokens[i]) != lparen)
+						&& ((decide_precedence(tokens[i], (char*)stackTop(&operators)) <= 0)))
 					{
-						stackPushAssess(output, stackPop(&operators));
+						stack_push_assess(output, stackPop(&operators));
 						stackPush(&intermediate, stackTop(output));
 					}
 
@@ -933,11 +933,11 @@ for(i = 0; i < numTokens; i++)
 					 was misplaced or parens mismatched and error will be thrown*/
 					 
 					while(stackSize(&operators) > 0
-						&& typeOfToken((token)stackTop(&operators)) != lparen
+						&& type_of_token((token)stackTop(&operators)) != lparen
 						&& stackSize(&operators) > 1)
 					{
 						
-						stackPushAssess(output, stackPop(&operators));//popping all operators onto output queue till top is left paren
+						stack_push_assess(output, stackPop(&operators));//popping all operators onto output queue till top is left paren
 						stackPush(&intermediate, stackTop(output));
 					}
 					
@@ -953,12 +953,12 @@ for(i = 0; i < numTokens; i++)
 					 and its Precedence is less than that of op2, pop op2 off the stack, onto the output queue and push op1 onto the stack*/
 	
 					while(stackSize(&operators) > 0
-						&& (typeOfToken((char*)stackTop(&operators)) == addop || typeOfToken((char*)stackTop(&operators)) == multop || typeOfToken((char*)stackTop(&operators)) == expop)
-						&& ((leftAssociative(tokens[i]) && decidePrecedence(tokens[i], (char*)stackTop(&operators)) <= 0)
-							|| (!leftAssociative(tokens[i]) && decidePrecedence(tokens[i], (char*)stackTop(&operators)) < 0)))
+						&& (type_of_token((char*)stackTop(&operators)) == addop || type_of_token((char*)stackTop(&operators)) == multop || type_of_token((char*)stackTop(&operators)) == expop)
+						&& ((left_associative(tokens[i]) && decide_precedence(tokens[i], (char*)stackTop(&operators)) <= 0)
+							|| (!left_associative(tokens[i]) && decide_precedence(tokens[i], (char*)stackTop(&operators)) < 0)))
 					{
 						
-						stackPushAssess(output, stackPop(&operators));
+						stack_push_assess(output, stackPop(&operators));
 						stackPush(&intermediate, stackTop(output));
 					}
 					
@@ -968,7 +968,7 @@ for(i = 0; i < numTokens; i++)
 			case lparen:
 				{
 					/*If the token is a left paren, then push it onto the stack*/
-					if (typeOfToken(stackTop(&operators)) == function)
+					if (type_of_token(stackTop(&operators)) == function)
 						stackPush(output, FUNCTIONSEPARATOR);
 					stackPush(&operators, tokens[i]);
 				}
@@ -980,24 +980,24 @@ for(i = 0; i < numTokens; i++)
 					then there are mismatched parens and error will be thrown*/
 
 					while(stackSize(&operators) > 0
-						&& typeOfToken((token)stackTop(&operators)) != lparen
+						&& type_of_token((token)stackTop(&operators)) != lparen
 						&& stackSize(&operators) > 1)
 					{
 						
-						stackPushAssess(output, stackPop(&operators));
+						stack_push_assess(output, stackPop(&operators));
 						stackPush(&intermediate, stackTop(output));
 					}
 					if(stackSize(&operators) > 0
-						&& typeOfToken((token)stackTop(&operators)) != lparen)
+						&& type_of_token((token)stackTop(&operators)) != lparen)
 					{
 						err = true;
-						throwErr(parenMismatch);
+						throw_err(parenMismatch);
 					}
 					
 					stackPop(&operators); 
-					while (stackSize(&operators) > 0 && typeOfToken((token)stackTop(&operators)) == function)
+					while (stackSize(&operators) > 0 && type_of_token((token)stackTop(&operators)) == function)
 					{
-						stackPushAssess(output, stackPop(&operators));
+						stack_push_assess(output, stackPop(&operators));
 						stackPush(&intermediate, stackTop(output));
 					}
 				}
@@ -1012,13 +1012,13 @@ for(i = 0; i < numTokens; i++)
 	
 	while(stackSize(&operators) > 0)
 	{
-		if(typeOfToken((token)stackTop(&operators)) == lparen)
+		if(type_of_token((token)stackTop(&operators)) == lparen)
 		{
-			throwErr(parenMismatch);
+			throw_err(parenMismatch);
 			err = true;
 		}
 		
-		stackPushAssess(output, stackPop(&operators));
+		stack_push_assess(output, stackPop(&operators));
 		stackPush(&intermediate, stackTop(output));
 	}
 	/*popping result from intermediate stack*/
@@ -1108,8 +1108,8 @@ int main(int argc, char *argv[])
         return 1;
     }
 	
-	str = getDataFile(fp);
-	//str = getDataConsole(stdin); /* Release 1 code */
+	str = get_data_file(fp);
+	//str = get_data_console(stdin); /* Release 1 code */
 	printf("%s",str);
         while(str != NULL && strcmp(str, "quit") != 0)
 	{
@@ -1117,11 +1117,11 @@ int main(int argc, char *argv[])
 			goto get_new_string;
 		
 		
-			numTokens = convertToTokens(str, &tokens);
+			numTokens = convert_to_tokens(str, &tokens);
 			free(str);
 			str = NULL;
             
-                        /*Convert to postfix*/
+            /*Convert to postfix*/
 
 			stackInit(&expr, numTokens);
 			
@@ -1164,8 +1164,8 @@ int main(int argc, char *argv[])
 			
 	get_new_string:
 		
-		str = getDataFile(fp);
-		//str = getDataConsole(stdin); /*release 1 code*/
+		str = get_data_file(fp);
+		//str = get_data_console(stdin); /*release 1 code*/
  int index, i;
 
     /* Set default index */
@@ -1185,18 +1185,10 @@ int main(int argc, char *argv[])
 
     /* Mark next character to last non-white space character as NULL */
     str[index + 1] = '\0';
-
-
-
-
-
 		sleep(1);
 		printf("%s",str);
 		
 	}
-
-
-
 	free(str);
 	str = NULL;
 	return EXIT_SUCCESS;
