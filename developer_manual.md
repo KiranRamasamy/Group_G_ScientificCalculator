@@ -39,8 +39,11 @@ During this process the program reads each symbol in order and does something ba
 # Main Features of the software
 
 Early evaluation
+
 • There is no separate evaluation step. Elements are evaluated on the postfix stack as soon as all terms are available. Due to the nature of the shunting-yard algorithm, as soon as an operator is pushed, it can be evaluated.
+
 • When our StackPushAssesss() function sees an operator, rather than pushing , it pops its operands, runs the computation, and pushes the result.
+
 • This means that once the input expression has been converted to postfix notation, the only element on the postfix stack is the result of the calculation.
 
 # Program Flow
