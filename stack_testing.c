@@ -9,6 +9,7 @@ int main()
 	Stack strs;
 	Stack ints;
 	char* str = NULL;
+        int i;
 
 	stackInit(&strs, STACKSIZE);
 	stackInit(&ints, STACKSIZE);
@@ -36,8 +37,23 @@ int main()
 	printf("Pushing \"%s\"\n", str);
 	stackPush(&strs, str);
 	printf("Top of stack: \"%s\"\n", (char*)stackTop(&strs));
+        
+        printf("Stack before stackPop():\n");
+	for(i = stackSize(&strs) - 1; i >= 0; i--)
+	{
+		printf("\"%s\"\n", (char*)(strs.content[i]));
+	}
 
+	str = stackPop(&strs);
+	printf("stackPop() returned \"%s\"\n", str);
+	printf("Remainder of stack:\n");
+	while(stackSize(&strs))
+	{
+		str = (char*)stackPop(&strs);
+		printf("\"%s\"\n", str);
+	}
 
+	
 	stackFree(&strs);
 
 	return 0;
