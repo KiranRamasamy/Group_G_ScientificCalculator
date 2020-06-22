@@ -17,7 +17,7 @@ Installation steps are mentioned in [install.md](https://github.com/tejaswinitum
 # Usage
 
 To run, you must first install it. Then you can follow instructions mentioned in
-[User_Manual.md](https://github.com/tejaswinitummala/Group_G_ScientificCalculator/blob/dev/user_manual.md).
+[User_Manual.md](https://github.com/tejaswinitummala/Group_G_ScientificCalculator/blob/dev/doc/user_manual.md).
 
 # File Structure
 
@@ -44,7 +44,7 @@ The correct file structure (after installing GSL library should be follow and ru
 
 # For Developers
 
-The developer manual is available [here](https://github.com/tejaswinitummala/Group_G_ScientificCalculator/blob/dev/developer_manual.md).
+The developer manual is available [here](https://github.com/tejaswinitummala/Group_G_ScientificCalculator/blob/dev/doc/developer_manual.md).
 
 # License
 
