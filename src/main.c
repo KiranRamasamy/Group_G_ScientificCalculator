@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <math.h> 
-#include "stack.c"
+#include "../include/stack.h"
 #include <getopt.h>
 
 

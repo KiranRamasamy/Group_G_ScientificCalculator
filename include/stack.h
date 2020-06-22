@@ -1,3 +1,17 @@
+/**
+ * @file stack.h
+ *
+ * @brief This is the main file from where all the funtions will be handled by the system.
+ * 
+ * @author  
+ * @author 
+ * @author 
+ * @author  
+ * */
+ 
+#ifndef STACK_H
+#define STACK_H
+
 #include<stdio.h>
 
 typedef struct
@@ -19,3 +33,4 @@ int stackSize(Stack *s);
 
 void stackFree(Stack *s);
 
+#endif
