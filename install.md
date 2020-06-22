@@ -15,4 +15,4 @@ If using Cygwin, dos2unix will be required
 //make command
 
 Excutable binary  file will be placed in `bin` directory.
-For test cases give 'Group_G_Scientific calculator-t' in the path of executable file.
+For test cases give 'Group_G_ScientificCalculator-t' in the path of executable file.
