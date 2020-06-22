@@ -26,14 +26,14 @@ $(BINDIR)/calculator: $(OBJDIR)/stack.o $(SRCDIR)/main.c
 	@mkdir -p $(BINDIR)
 	$(CC) $(LFLAGS) -o $(BINDIR)/calculator $(SRCDIR)/main.c $(SRCDIR)/stack.c $(LIBS)
 
-stack_test: $(OBJDIR)/stack.o $(SRCTESTDIR)/stack_test.c
-	$(CC) $(LFLAGS) -o $(BINDIR)/stack_test $(SRCTESTDIR)/stack_test.c $(SRCDIR)/stack.c $(LIBS)
+stack_test: $(OBJDIR)/stack.o $(SRCTESTDIR)/stack_testing.c
+	$(CC) $(LFLAGS) -o $(BINDIR)/stack_testing $(SRCTESTDIR)/stack_testing.c $(SRCDIR)/stack.c $(LIBS)
 
 $(OBJDIR)/stack.o: $(SRCDIR)/stack.c $(INCDIR)/stack.h
 	@mkdir -p $(OBJDIR)
 	$(CC) $(CFLAGS) $(SRCDIR)/stack.c $(LIBS)
 
 clean:
-	rm -f $(OBJDIR)/*.o $(BINDIR)/calculator $(BINDIR)/stack_test
+	rm -f $(OBJDIR)/*.o $(BINDIR)/calculator $(BINDIR)/stack_testing
 
 .PHONY: $(BINDIR)/calculator

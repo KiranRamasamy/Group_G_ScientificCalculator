@@ -2,7 +2,7 @@
 /**
  * @file stack_testing.c
  *
- * @brief Stack testing is done here like pusshing and popping of elements is done.
+ * @brief Stack testing is done for pushing, popping, stack size and stack free of elements is done.
  * 
  * @author Indu Guduru - induguduru@cmail.carleton.ca
  * @author Kiran Ramasamy- kiranramasamy@cmail.carleton.ca
@@ -66,8 +66,8 @@ int main()
 		printf("\"%s\"\n", str);
 	}
 
-	/* Test intialization */
-	printf("\n\nTest initialization:\n");
+	/* Test ints */
+	printf("\n\nTest ints:\n");
 
 	for (i = 1; i <= 4; i++)
 	{
