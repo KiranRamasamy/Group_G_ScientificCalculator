@@ -111,3 +111,22 @@ inputMissing – if a input is missing while performing the operation
 
 * If the EOF statement is not “Quit”.
 
+# Program Output
+
+**Program console**
+
+![1](https://user-images.githubusercontent.com/65427344/85243886-0cc67d80-b411-11ea-9783-e2e6a5962739.PNG)
+
+**Input Data file**
+
+![4](https://user-images.githubusercontent.com/65427344/85244194-f240d400-b411-11ea-833d-05292b03ab01.PNG)
+**Execution of the program**
+
+![2](https://user-images.githubusercontent.com/65427344/85244263-20beaf00-b412-11ea-80a2-d8dee842cbbd.PNG)
+
+**Input Data file after the execution of the program**
+
+![3](https://user-images.githubusercontent.com/65427344/85244329-4b106c80-b412-11ea-9d4f-36dfffd6a2e2.PNG)
+
+
+
