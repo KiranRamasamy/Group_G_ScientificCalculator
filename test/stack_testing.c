@@ -2,7 +2,7 @@
 /**
  * @file stack_testing.c
  *
- * @brief Stack testing is done for pushing, popping, stack size and stack free of elements is done.
+ * @brief Stack testing is done for pushing, popping, stack size and stack free of elements (both strings and integers).
  * 
  * @author Indu Guduru - induguduru@cmail.carleton.ca
  * @author Kiran Ramasamy- kiranramasamy@cmail.carleton.ca
