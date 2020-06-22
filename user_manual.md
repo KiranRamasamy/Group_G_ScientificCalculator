@@ -79,9 +79,7 @@ The user gives expressions as inputs using “Files”. The expression in the fi
 
 * The input file should be placed in the same folder where the source code is located.
 
-**Sample input file:**
-
-Ex : input.txt
+**Sample input file:** (input.txt)
 
 2+3
 
@@ -89,7 +87,7 @@ Ex : input.txt
 
 (900/20)^3
 
-Quit
+quit
 
 
 # Error codes:
