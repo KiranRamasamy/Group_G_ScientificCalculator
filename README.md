@@ -21,8 +21,6 @@ To run, you must first install it. Then you can follow instructions mentioned in
 
 # File Structure
 
-# File Structure
-
 The correct file structure (after installing GSL library should be follow and run the binary)
 
 ```
