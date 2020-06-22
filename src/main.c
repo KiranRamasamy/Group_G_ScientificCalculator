@@ -14,6 +14,7 @@
 #include <math.h> 
 #include "../include/stack.h"
 #include <getopt.h>
+#include <unistd.h>
 
 
 #define bool char
@@ -1058,7 +1059,6 @@ for(i = 0; i < numTokens; i++)
 int main(int argc, char *argv[])
 {    
         FILE *fp, *fpoutput;
-	char st[1000];
 	char fname[30];
         char an[100] = "Answers: ";
         printf("\n**************************************************************************************************************************************************************************************************************\n");
