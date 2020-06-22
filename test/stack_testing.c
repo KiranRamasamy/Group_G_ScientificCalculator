@@ -12,6 +12,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../include/stack.h"
+#include "../src/stack.c"
+
 
 #define STACKSIZE 150
 
@@ -87,31 +89,6 @@ int main()
 	for (i = stackSize(&ints) - 1; i >= 0; i--)
 	{
 		printf("%d\n", *((int *)(ints.content[i])));
-	}
-
-	stackFree(&strs);
-
-	// Test ints
-	printf("\n\nTest ints:\n");
-
-	for(i = 1; i <= 4; i++)
-	{
-		int *add = (int*)malloc(sizeof(int));
-		if (add == NULL)
-		{
-			printf("Cannot allocate memory, poping stack\n");
-			goto error_pop;
-		}
-		*add = i;
-		printf("Pushing %d\n", *add);
-		stackPush(&ints, add);
-		printf("Top of stack: %d\n", *(int*)stackTop(&ints));
-	}
-
-	printf("Stack before stackPop():\n");
-	for(i = stackSize(&ints) - 1; i >= 0; i--)
-	{
-		printf("%d\n", *((int*)(ints.content[i])));
 	}
 
 	iptr = (int*)stackPop(&ints);
