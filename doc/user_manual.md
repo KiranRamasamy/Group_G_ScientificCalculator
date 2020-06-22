@@ -67,17 +67,17 @@ The user gives expressions as inputs using “Files”. The expression in the fi
 
 # How to write the input file
 
-* The input file should be saved in.txt format.
+* The input file should be saved in '.txt' format.
 
 * The input file should contain minimum of two operands and one operator to evaluate the expression. 
 
-* Every single expression should be written in a single line
+* Every single expression should be written in a single line.
 
-* The input expression should have the functions mentioned in the “operations and functions”. It should not contain the special characters such as @, # , $, !, ~, &
+* The input expression should have the functions mentioned in the “operations and functions”. It should not contain the special characters such as @, # , $, !, ~, &.
 
 * The input file should have the “quit” statement at the end of the file if not the program will enter the infinite loop.
 
-* The input file should be placed in the same folder where the source code is located.
+* The input file should be placed in the same folder where the executable file gets created after "make" (bin folder).
 
 **Sample input file:** (input.txt)
 
@@ -103,9 +103,9 @@ inputMissing – if a input is missing while performing the operation
 
 * If the file name is saved in any other format other than .txt format.
 
-* If the input file name given in the program doesn’t exist
+* If the input file name given in the program doesn’t exist.
 
-* If the expressions in the input file contains special characters like @, # , $, !, ~, &
+* If the expressions in the input file contains special characters like @, # , $, !, ~, &.
 
 * If the input file is kept in the different folder rather than the folder that contains the source code.
 
