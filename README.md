@@ -1,6 +1,6 @@
 # Scientific Calculator
 
-Scientific calculator refers to performing complex operations on numbers in various formats.
+The purpose of the calculator is to evaluate all lines of expressions from an input file that involves arithmetic operations and scientific functions and will return the output in the same file. Since the calculator evaluates all the expressions present in the file in a single execution, user saves lot of time. This calculator comes up with a different way of taking inputs and providing outputs to the user.
 
 
 # Authors
@@ -12,7 +12,7 @@ Scientific calculator refers to performing complex operations on numbers in vari
 
 # Installation
 
-Installation steps are mentioned in 
+Installation steps are mentioned in [install.md](https://github.com/tejaswinitummala/Group_G_ScientificCalculator/blob/dev/install.md)
 
 # Usage
 
