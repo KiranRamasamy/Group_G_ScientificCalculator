@@ -1068,7 +1068,7 @@ int main(int argc, char *argv[])
         printf("\n\t\t\t\t\t\t\t | 25.Arctan atan()or arctan()| 26.Summation sum()          | 27. quit                       |");
         printf("\n\t\t\t\t\t\t\t  --------------------------------------------------------------------------------------------");
 
-	printf("\nExample of an expression: (12+3)*5+(7/2)*log(2)");
+	printf("\nExample filename:\"abc.txt\" \n");
 	printf("\nEnter the filename:");
         scanf("%s",fname);
         char* filename = fname;
@@ -1166,7 +1166,7 @@ int main(int argc, char *argv[])
 		
 		str = get_data_file(fp);
 		//str = get_data_console(stdin); /*release 1 code*/
- int index, i;
+     int index, i;
 
     /* Set default index */
     index = -1;
@@ -1184,12 +1184,13 @@ int main(int argc, char *argv[])
     }
 
     /* Mark next character to last non-white space character as NULL */
-    str[index + 1] = '\0';
-		sleep(1);
-		printf("%s",str);
+       str[index + 1] = '\0';
+       sleep(1);
+       printf("%s",str);
 		
 	}
 	free(str);
 	str = NULL;
+        printf("\n\n***\tOpen your file:\"%s\" for answers\t***\n\n",fname);
 	return EXIT_SUCCESS;
 }
