@@ -25,8 +25,8 @@ The correct file structure (after installing GSL library should be follow and ru
 
 ```
 ├── DOCS.md 	-> Usage file
-           └──  Developer_Manual.md
-		       └──  User_Manual.md
+           ├── Developer_Manual.md
+           ├── User_Manual.md
 ├── INSTALL.md 	-> Installation Guide
 ├── LICENSE 	-> License file
 ├── Makefile 	-> Makefile
