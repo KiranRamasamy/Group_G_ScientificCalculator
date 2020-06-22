@@ -1,3 +1,14 @@
+/**
+ * @file stack.c
+ *
+ * @brief All the stack functions are declared here
+ * 
+ * @author Indu Guduru - induguduru@cmail.carleton.ca
+ * @author Kiran Ramasamy- kiranramasamy@cmail.carleton.ca
+ * @author Tejaswini Tummala- tejaswinitummala@cmail.carleton.ca
+ * @author Vinoth Kumar Baskaran -vinothkumarbaskaran@cmail.carleton.ca
+ * */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "../include/stack.h"

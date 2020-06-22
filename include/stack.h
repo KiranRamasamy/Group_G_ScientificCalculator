@@ -1,7 +1,7 @@
 /**
  * @file stack.h
  *
- * @brief This is the main file from where all the funtions will be handled by the system.
+ * @brief This is a header file for stack.c
  * 
  * @author Indu Guduru - induguduru@cmail.carleton.ca
  * @author Kiran Ramasamy- kiranramasamy@cmail.carleton.ca

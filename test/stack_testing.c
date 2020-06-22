@@ -1,3 +1,14 @@
+
+/**
+ * @file stack_testing.c
+ *
+ * @brief Stack testing is done here like pusshing and popping of elements is done.
+ * 
+ * @author Indu Guduru - induguduru@cmail.carleton.ca
+ * @author Kiran Ramasamy- kiranramasamy@cmail.carleton.ca
+ * @author Tejaswini Tummala- tejaswinitummala@cmail.carleton.ca
+ * @author Vinoth Kumar Baskaran - vinothkumarbaskaran@cmail.carleton.ca
+ * */
 #include <stdio.h>
 #include <stdlib.h>
 #include "../include/stack.h"

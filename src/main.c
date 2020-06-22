@@ -1,3 +1,13 @@
+/**
+ * @file main.c
+ *
+ * @brief It handles all the calculator operations
+ * 
+ * @author Indu Guduru - induguduru@cmail.carleton.ca
+ * @author Kiran Ramasamy- kiranramasamy@cmail.carleton.ca
+ * @author Tejaswini Tummala- tejaswinitummala@cmail.carleton.ca
+ * @author Vinoth Kumar Baskaran -vinothkumarbaskaran@cmail.carleton.ca
+ * */
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>

@@ -1,4 +1,13 @@
-# change these to proper directories where each file should be
+
+#  @file make file
+ 
+#   @brief make file is used to compile and link multiple source files.
+#   @author Indu Guduru - induguduru@cmail.carleton.ca
+#   @author Kiran Ramasamy- kiranramasamy@cmail.carleton.ca
+#   @author Tejaswini Tummala- tejaswinitummala@cmail.carleton.ca
+#   @author Vinoth Kumar Baskaran -vinothkumarbaskaran@cmail.carleton.ca
+ 
+ # change these to proper directories where each file should be
 SRCDIR       = src
 SRCTESTDIR   = test
 OBJDIR       = obj
