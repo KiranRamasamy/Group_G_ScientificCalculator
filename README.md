@@ -21,6 +21,28 @@ To run, you must first install it. Then you can follow instructions mentioned in
 
 # File Structure
 
+# File Structure
+
+The correct file structure (after installing GSL library should be follow and run the binary)
+
+```
+├── DOCS.md 	-> Usage file
+           └──  Developer_Manual.md
+		       └──  User_Manual.md
+├── INSTALL.md 	-> Installation Guide
+├── LICENSE 	-> License file
+├── Makefile 	-> Makefile
+├── README.md 	-> Readme file
+├── bin 	-> Binary directory
+├── include 	-> Header files
+          ├── stack.h
+├── src 	-> Source files 
+│       ├── main.c
+│       ├── stack.c
+└── test
+          ├── Test data
+                       └── stack_testing.c
+```
 
 # For Developers
 
