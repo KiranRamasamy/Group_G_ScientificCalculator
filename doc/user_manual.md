@@ -4,6 +4,7 @@ The purpose of this calculator is to evaluate all lines of expressions from an i
 
 # Installation
 
+Please refer to [INSTALL.md](https://github.com/tejaswinitummala/Group_G_ScientificCalculator/blob/dev/install.md) file for installation instructions.
 
 # Usage
 
