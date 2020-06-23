@@ -2,6 +2,12 @@
  * @file postfix_test.c
  *
  * @brief This is the test cases for postfix function 
+ * @details This code is used to check the postfix function and print the postfix. The infix expression given is converted to postfix
+ * which is the main purpose of the function.
+ * A testinput file has been created with some test input initially. When this code is executed, the inputs from that file are read and
+ * the postfix stack for all those inputs is printed on console.
+ * All test cases mentioned in the assignment are covered i.e., missing left or right parenthesis, extra parenthesis etc.
+ * quit is used at the end to terminate.
  * 
  * @author Tejaswini Tummala- tejaswinitummala@cmail.carleton.ca
  **/
@@ -11,73 +17,11 @@
 #include <string.h>
 #include <stdlib.h>
 #include <math.h> 
-#include "../../include/stack.h"
-#include "../../src/stack.c"
+#include "../include/postfix_test.h"
 #include <getopt.h>
 #include <unistd.h>
 
-
-#define bool char
-#define true 1
-#define false 0
-#define MAXPRECISION 20
-#define MAXTOKENLENGTH 512
-#define DEFAULTPRECISION 5
-#define FUNCTIONSEPARATOR "|"
-#define PI 3.141592653589793
-
-
-#ifndef NAN
-#define NAN (0.0/0.0)
-#endif
-
-#ifndef INFINITY
-#define INFINITY (1.0/0.0)
-#endif
-
 typedef double number;
-typedef char* token;
-
-typedef enum
-{
-	addop,
-	multop,
-	expop,
-	lparen,
-	rparen,
-	digit,
-	value,
-	decimal,
-	space,
-	text,
-	function,
-	identifier,
-	argsep,
-	invalid
-} Symbol;
-
-struct Preferences
-{
-	struct Display
-	{
-		bool tokens;
-		bool postfix;
-	} display;
-	struct Mode
-	{
-		bool degrees;
-	} mode;
-	int precision;
-	int maxtokenlength;
-} prefs;
-
-typedef enum
-{
-	divZero,
-	overflow,
-	parenMismatch,
-	inputMissing,
-} Error;
 
 void throw_err(Error err)
 {
@@ -105,12 +49,7 @@ inline unsigned int toDigit(char ch)
 	return ch - '0';
 }
 
-number construct_num(token str)
-{
-	number result = 0;
-	result = strtod(str, NULL); /*strtod for string to float (double)*/
-	return result;
-}
+
 
 token number_to_string(number num)
 {
@@ -133,16 +72,8 @@ token number_to_string(number num)
 	return str;
 }
 
-number convert_to_rad(number degrees)
-{
-	return degrees * PI / 180.0;
-}
 
-number convert_to_deg(number radians)
-{
-	return radians * 180.0 / PI;
-}
-char* get_data_console(FILE* stream)
+char* get_data_file(FILE* stream)
 {
 	unsigned int maxlen = 128, size = 128;
 	char* bufferMemory = (char*)malloc(maxlen);
@@ -153,7 +84,7 @@ char* get_data_console(FILE* stream)
 		int pos = 0;
 
 		
-		while((ch = getchar()) != EOF && ch != '\n')
+		while((ch = fgetc(stream)) != EOF && ch != '\n')
 		{
 			bufferMemory[pos++] = ch;
 			if(pos == size) 
@@ -171,231 +102,16 @@ int perform_funcs(Stack *s, token function)
 {
 if (stackSize(s) == 0)
 	{
-		//throwErr here with missing input
 		stackPush(s, number_to_string(NAN));
 		return -1;
 	}
 	else if (stackSize(s) == 1 && strcmp(stackTop(s), FUNCTIONSEPARATOR) == 0)
 	{
 		stackPop(s);
-		//throwErr here with missing input
 		stackPush(s, number_to_string(NAN));
 		return -1;
 	}
-	
-	token input = (token)stackPop(s);
-	number num = construct_num(input);
-	number result = num;
-	number counter = 0;
-
-	if(strncmp(function, "abs", 3) == 0)
-		result = fabs(num);
-	else if(strncmp(function, "floor", 5) == 0)
-		result = floor(num);
-	else if(strncmp(function, "ceil", 4) == 0)
-		result = ceil(num);
-	else if(strncmp(function, "sin", 3) == 0)
-		result = !prefs.mode.degrees ? sin(num) : sin(convert_to_rad(num));
-	else if(strncmp(function, "cos", 3) == 0)
-		result = !prefs.mode.degrees ? cos(num) : cos(convert_to_rad(num));
-	else if(strncmp(function, "tan", 3) == 0)
-		result = !prefs.mode.degrees ? tan(num) : tan(convert_to_rad(num));
-	else if(strncmp(function, "arcsin", 6) == 0
-		 || strncmp(function, "asin", 4) == 0)
-		result = !prefs.mode.degrees ? asin(num) : convert_to_deg(asin(num));
-	else if(strncmp(function, "arccos", 6) == 0
-		 || strncmp(function, "acos", 4) == 0)
-		result = !prefs.mode.degrees ? acos(num) : convert_to_deg(acos(num));
-	else if(strncmp(function, "arctan", 6) == 0
-		 || strncmp(function, "atan", 4) == 0)
-		result = !prefs.mode.degrees ? atan(num) : convert_to_deg(atan(num));
-	else if(strncmp(function, "sqrt", 4) == 0)
-		result = sqrt(num);
-	else if(strncmp(function, "cbrt", 4) == 0)
-		result = cbrt(num);
-	else if(strncmp(function, "log", 3) == 0)
-		result = log(num);
-	else if(strncmp(function, "exp", 3) == 0)
-		result = exp(num);
-else if(strncmp(function, "min", 3) == 0)
-	{
-		while (stackSize(s) > 0 && strcmp(stackTop(s), FUNCTIONSEPARATOR) != 0)
-		{
-			input = (token)stackPop(s);
-			num = construct_num(input);
-			if (num < result)
-				result = num;
-		}
-	}
-	else if(strncmp(function, "max", 3) == 0)
-	{
-		while (stackSize(s) > 0 && strcmp(stackTop(s), FUNCTIONSEPARATOR) != 0)
-		{
-			input = (token)stackPop(s);
-			num = construct_num(input);
-			if (num > result)
-				result = num;
-		}
-	}
-	else if(strncmp(function, "sum", 3) == 0)
-	{
-		while (stackSize(s) > 0  && strcmp(stackTop(s), FUNCTIONSEPARATOR) != 0)
-		{
-			input = (token)stackPop(s);
-			num = construct_num(input);
-			result += num;
-		}
-	}
-	else if(strncmp(function, "avg", 3) == 0 ||
-			strncmp(function, "mean", 4) == 0)
-	{
-		counter = 1;
-		while (stackSize(s) > 0  && strcmp(stackTop(s), FUNCTIONSEPARATOR) != 0)
-		{
-			input = (token)stackPop(s);
-			num = construct_num(input);
-			result += num;
-			counter++;
-		}
-		result /= counter;
-	}
-	else if(strncmp(function, "median", 6) == 0)
-	{
-		Stack tmp, safe;
-		counter = 1;
-		stackInit(&tmp, (stackSize(s) > 0 ? stackSize(s) : 1));
-		stackInit(&safe, (stackSize(s) > 0 ? stackSize(s) : 1));
-		stackPush(&tmp, input);
-		while (stackSize(s) > 0  && strcmp(stackTop(s), FUNCTIONSEPARATOR) != 0)
-		{
-			input = (token)stackPop(s);
-			num = construct_num(input);
-			while (stackSize(&tmp) > 0 && construct_num(stackTop(&tmp)) < num)
-			{
-				stackPush(&safe, stackPop(&tmp));
-			}
-			stackPush(&tmp, input);
-			while (stackSize(&safe) > 0)
-			{
-				stackPush(&tmp, stackPop(&safe));
-			}
-			counter++;
-		}
-		stackFree(&safe);
-		counter = (number)(((int)counter+1)/2);
-		while (counter > 1)
-		{
-			stackPop(&tmp);
-			counter--;
-		}
-		result = construct_num(stackPop(&tmp));
-		while (stackSize(&tmp) > 0)
-		{
-			stackPop(&tmp);
-		}
-		stackFree(&tmp);
-	}	
-	else if(strncmp(function, "var", 3) == 0)
-	{
-		Stack tmp;
-		counter = 1;
-		stackInit(&tmp, (stackSize(s) > 0 ? stackSize(s) : 1));
-		stackPush(&tmp, input);
-		number mean = result;
-		while (stackSize(s) > 0  && strcmp(stackTop(s), FUNCTIONSEPARATOR) != 0)
-		{
-			input = (token)stackPop(s);
-			stackPush(&tmp, input);
-			num = construct_num(input);
-			mean += num;
-			counter++;
-		}
-		mean /= counter;
-		result = 0;
-		while (stackSize(&tmp) > 0)
-		{
-			input = (token)stackPop(&tmp);
-			num = construct_num(input)-mean;
-			result += pow(num,2);
-		}
-		result /= counter;
-		stackFree(&tmp);
-	}
-	if (strcmp(stackTop(s), FUNCTIONSEPARATOR) == 0)
-		stackPop(s);
-	stackPush(s, number_to_string(result));
-	return 0;
 }	
-
-int perform_ops(Stack *s, token op)
-{
-	int err = 0;
-	token roperand = (token)stackPop(s);
-	token loperand = (token)stackPop(s);
-	number lside = construct_num(loperand);
-	number rside = construct_num(roperand);
-	number ret;
-	switch(*op)
-	{
-		case '^':
-			{
-				ret = pow(lside, rside);
-			}
-			break;
-		case '*':
-			{
-				ret = lside * rside;
-			}
-			break;
-		case '/':
-			{
-				if(rside == 0)
-				{
-					throw_err(divZero);
-					if (lside == 0)
-						ret = NAN;
-					else
-						ret = INFINITY;
-					err = -1;
-				}
-				else
-					ret = lside / rside;
-			}
-			break;
-		case '%':
-			{
-				if(rside == 0)
-				{
-					throw_err(divZero);
-					if (lside == 0)
-						ret = NAN;
-					else
-						ret = INFINITY;
-					err = -1;
-				}
-				else
-				{
-					ret = (int)(lside / rside);
-					ret = lside - (ret * rside);
-				}
-			}
-			break;
-		case '+':
-			{
-				ret = lside + rside;
-			}
-			break;
-		case '-':
-			{
-				ret = lside - rside;
-			}
-			break;
-		
-	}
-	stackPush(s, number_to_string(ret));
-	return err;
-}
-
 
 Symbol find_type(char ch)
 {
@@ -590,7 +306,7 @@ int convert_to_tokens(char *str, char *(**tokensRef))
 	}
 	while((ch = *ptr++))
 	{
-		if(find_type(ch) == invalid) /* Stop tokenizing when we encounter an invalid character */
+		if(find_type(ch) == invalid) 
 			break;
 
 		token newToken = NULL;
@@ -599,7 +315,7 @@ int convert_to_tokens(char *str, char *(**tokensRef))
 		{
 			case addop:
                                {
-                                      /* Check if this is a negative */
+                                     
 					if(ch == '-'
 						&& (numTokens == 0
 							|| (type_of_token(tokens[numTokens-1]) == addop
@@ -668,35 +384,34 @@ int convert_to_tokens(char *str, char *(**tokensRef))
                         
                         case digit:
 			case decimal:
-                                  /* Assemble an n-character (plus null-terminator) number token */
+                                  
 				{
 					int len = 1;
 					bool hasDecimal = false;
 					bool hasExponent = false;
 
-					if(find_type(ch) == decimal) /* Allow numbers to start with decimal */
+					if(find_type(ch) == decimal) 
 					{
-						/* printf("Decimal\n"); */
+				
 						hasDecimal = true;
 						len++;
 						tmpToken[0] = '0';
 						tmpToken[1] = '.';
 					}
-					else /* Numbers that do not start with decimal */
+					else 
 					{
 						tmpToken[len-1] = ch;
 					}
 
-					/* Assemble rest of number */
-					for(; /* Don't change len */
-						*ptr /* There is a next character and it is not null */
+					for(; 
+						*ptr 
 						&& len <= prefs.maxtokenlength
-						&& (find_type(*ptr) == digit /* The next character is a digit */
-						 	|| ((find_type(*ptr) == decimal /* Or the next character is a decimal */
-						 		&& hasDecimal == 0)) /* But we have not added a decimal */
-						 	|| ((*ptr == 'E' || *ptr == 'e') /* Or the next character is an exponent */
-						 		&& hasExponent == false) /* But we have not added an exponent yet */
-						 	|| ((*ptr == '+' || *ptr == '-') && hasExponent == true)); /* Exponent with sign */
+						&& (find_type(*ptr) == digit 
+						 	|| ((find_type(*ptr) == decimal 
+						 		&& hasDecimal == 0)) 
+						 	|| ((*ptr == 'E' || *ptr == 'e') 
+						 		&& hasExponent == false) 
+						 	|| ((*ptr == '+' || *ptr == '-') && hasExponent == true)); 
 						++len)
 					{
 						if(find_type(*ptr) == decimal)
@@ -705,14 +420,11 @@ int convert_to_tokens(char *str, char *(**tokensRef))
 							hasExponent = true;
 						tmpToken[len] = *ptr++;
 					}
-
-					/* Append null-terminator */
 					tmpToken[len] = '\0';
 				}
 				break;
                         
                         case text:
-                              /* Assemble an n-character (plus null-terminator) text token */
 				{
 					int len = 1;
 					tmpToken[0] = ch;
@@ -727,13 +439,10 @@ int convert_to_tokens(char *str, char *(**tokensRef))
                         default:
                              break;
                 }
-             /* Add to list of tokens */
              if(tmpToken[0] != '\0' && strlen(tmpToken) > 0)
 		{
 			numTokens++;
-			/*if(tokens == NULL)- First allocation
-				tokens = (char**)malloc(numTokens * sizeof(char*));
-			else*/
+			
 			newToken = malloc((strlen(tmpToken)+1) * sizeof(char));
 			if (!newToken)
 			{
@@ -764,7 +473,7 @@ int convert_to_tokens(char *str, char *(**tokensRef))
 			tokens[numTokens - 1] = newToken;
 		}
 	}
-	*tokensRef = tokens; /* Send back out */
+	*tokensRef = tokens; 
 	free(tmpToken);
 	tmpToken = NULL;
 	return numTokens;
@@ -838,6 +547,7 @@ int decide_precedence(token op1, token op2)
 
 void stack_push_assess(Stack *s, token val)
 {
+		
         printf("\t%s\n", val);
 
 	switch(type_of_token(val))
@@ -854,7 +564,6 @@ void stack_push_assess(Stack *s, token val)
 			{
 				if(stackSize(s) >= 2)
 				{				
-					if (perform_ops(s, val) < 0)
 						return;
 								
 				}
@@ -884,7 +593,7 @@ bool postfix(token *tokens, int numTokens, Stack *output)
 	stackInit(&intermediate, numTokens);
 for(i = 0; i < numTokens; i++)
 	{
-		/*Shunting yard algorithm concept is used*/
+	
 		switch(type_of_token(tokens[i]))
 		{
 			case value:
@@ -1026,9 +735,15 @@ for(i = 0; i < numTokens; i++)
 }
 
 
-int main()
+int main(int argc, char *argv[])
 {    
+        FILE *fp, *fpoutput;
+	char fname[30];
         
+	
+        char* filename = "testinput.txt";
+	char* str = NULL;	
+	char* output = malloc(128);
 
 	token* tokens = NULL;
 	int numTokens = 0;
@@ -1037,35 +752,44 @@ int main()
 	int ch, rflag = 0;
 	prefs.precision = DEFAULTPRECISION;
 	prefs.maxtokenlength = MAXTOKENLENGTH;
-    char* str = NULL;
-    char* output = malloc(128);
+        		
+	fp = fopen(filename, "r");
+        
+		
+		    if (fp == NULL){
+        printf("Could not open file %s",filename);
+        return 1;
+    }
 	
-	//str = get_data_console(stdin);
-    str = (char)2+3;
+	str = get_data_file(fp);
 	printf("%s",str);
-    printf("\n Postfix stack is\n");
         while(str != NULL && strcmp(str, "quit") != 0)
 	{
+		if (strlen(str) == 0)
+			goto get_new_string;
+		
+		
 			numTokens = convert_to_tokens(str, &tokens);
 			free(str);
 			str = NULL;
-            
-            /*Convert to postfix*/
 
 			stackInit(&expr, numTokens);
+			printf("\nPostfix stack is:\n");
 			
 			postfix(tokens, numTokens, &expr);
 			
 			if(stackSize(&expr) != 1)
 			{
-				printf("\tError evaluating expression\n");
 			}
                           
-                         else
+            else
 			{
 			
-
-		
+			for (i=0; i< numTokens; i++)
+			{
+			if (tokens[i] == stackTop(&expr))
+			tokens[i] = NULL;
+			}
 			free(stackPop(&expr));
 			}
 
@@ -1079,9 +803,29 @@ int main()
 			numTokens = 0;
 			stackFree(&expr);	
 			
-	
-}
-}
+	get_new_string:
+		
+		str = get_data_file(fp);
+     int index, i;
+    index = -1;
+    i = 0;
+    while(str[i] != '\0')
+    {
+        if(str[i] != ' ' && str[i] != '\t' && str[i] != '\n')
+        {
+            index= i;
+        }
 
-
+        i++;
+    }
+       str[index + 1] = '\0';
+       sleep(1);
+       printf("%s",str);
+		
+	}
+	free(str);
+	str = NULL;
+        
+	return EXIT_SUCCESS;
+}
 
