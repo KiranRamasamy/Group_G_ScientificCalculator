@@ -25,7 +25,7 @@ LIBS = -lm
 
 $(BINDIR)/calculator: $(OBJDIR)/stack.o $(SRCDIR)/main.c
 	@mkdir -p $(BINDIR)
-	$(CC) $(LFLAGS) -o $(BINDIR)/calculator $(SRCDIR)/main.c $(SRCDIR)/stack.c $(LIBS)
+	$(CC) $(LFLAGS) -o $(BINDIR)/calculator $(SRCDIR)/main.c $(SRCTESTDIR)/test.c $(SRCDIR)/stack.c $(LIBS)
 
 stack_test: $(OBJDIR)/stack.o $(SRCTESTDIR)/stack_testing.c
 	$(CC) $(LFLAGS) -o $(BINDIR)/stack_testing $(SRCTESTDIR)/stack_testing.c $(SRCDIR)/stack.c $(LIBS)

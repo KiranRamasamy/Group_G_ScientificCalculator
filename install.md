@@ -2,7 +2,7 @@
 
 ## Supported Platforms:
 
-Unix, Windows and MacOS.
+Unix, Cygwin and MacOS.
 
 ## Prerequisite
 
@@ -19,12 +19,14 @@ make
 
 Excutable binary  file will be placed in `bin` directory.
 
-For test cases give 'make stack_testing' .
+For test cases give 'make stack_test' .
 
 For  Postfix test cases give 'make postfix_test' .
 
 For  Type of token test cases give 'make typeoftoken_test' .
 
 For  Performoperations test cases give 'make performops_test' .
+
+For testing Perform_Func function go to bin folder, "calculator -t" 
 
 

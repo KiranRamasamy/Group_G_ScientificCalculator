@@ -1,0 +1,1 @@
+void automated_perform_functions_test();

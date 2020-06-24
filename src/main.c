@@ -13,6 +13,7 @@
 #include <stdlib.h>
 #include <math.h> 
 #include "../include/stack.h"
+#include "../test/include/test.h"
 #include <getopt.h>
 #include <unistd.h>
 
@@ -145,10 +146,13 @@ number convert_to_deg(number radians)
 
 int perform_funcs(Stack *s, token function)
 {
+
+
 if (stackSize(s) == 0)
 	{
 		//throwErr here with missing input
 		stackPush(s, number_to_string(NAN));
+	
 		return -1;
 	}
 	else if (stackSize(s) == 1 && strcmp(stackTop(s), FUNCTIONSEPARATOR) == 0)
@@ -156,18 +160,26 @@ if (stackSize(s) == 0)
 		stackPop(s);
 		//throwErr here with missing input
 		stackPush(s, number_to_string(NAN));
+	
 		return -1;
 	}
 	
 	token input = (token)stackPop(s);
+	
 	number num = construct_num(input);
+
 	number result = num;
 	number counter = 0;
 
 	if(strncmp(function, "abs", 3) == 0)
 		result = fabs(num);
 	else if(strncmp(function, "floor", 5) == 0)
+	{
+		
 		result = floor(num);
+
+	}
+		
 	else if(strncmp(function, "ceil", 4) == 0)
 		result = ceil(num);
 	else if(strncmp(function, "sin", 3) == 0)
@@ -297,9 +309,17 @@ else if(strncmp(function, "min", 3) == 0)
 		result /= counter;
 		stackFree(&tmp);
 	}
+
 	if (strcmp(stackTop(s), FUNCTIONSEPARATOR) == 0)
-		stackPop(s);
+	{
+
+		
+	stackPop(s);
+	}
+	
 	stackPush(s, number_to_string(result));
+	
+
 	return 0;
 }	
 
@@ -1057,7 +1077,25 @@ for(i = 0; i < numTokens; i++)
 
 
 int main(int argc, char *argv[])
-{    
+{  
+int opt;
+	while ((opt = getopt(argc, argv, "t")) != -1) {
+        switch (opt) {
+        case 't':
+            /* Run automated unit testing */
+            printf("Running automated unit testing\n");
+			automated_perform_functions_test();
+            printf("Automated testing has completed\n");
+            return 1;
+            break;
+		default:
+            printf("Executable file of appplication will be placed here ");
+            break;
+		}
+	}
+
+
+
         FILE *fp, *fpoutput;
 	char fname[30];
         char an[100] = "Answers: ";
@@ -1202,5 +1240,6 @@ int main(int argc, char *argv[])
 	free(str);
 	str = NULL;
         printf("\n\n***\tOpen your file:\"%s\" for answers\t***\n\n",fname);
+		getchar();
 	return EXIT_SUCCESS;
 }
