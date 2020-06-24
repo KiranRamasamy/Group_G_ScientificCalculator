@@ -16,6 +16,15 @@ make clean
 
 make
 
+
 Excutable binary  file will be placed in `bin` directory.
 
-For test cases give 'Group_G_ScientificCalculator-t' in the path of executable file.
+For test cases give 'make stack_test' .
+
+For  Postfix test cases give 'make postfix_test' .
+
+For  Type of token test cases give 'make typeoftoken_test' .
+
+For  Performoperations test cases give 'make performops_test' .
+
+

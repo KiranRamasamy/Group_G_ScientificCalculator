@@ -1,4 +1,4 @@
-*
+/**
  * @file performops_test.h
  *
  * @brief Collections of declaration function of automated unit tests for performops function

@@ -34,20 +34,13 @@ The correct file structure (after installing GSL library should be follow and ru
 ├── bin 	-> Binary directory
 ├── include 	-> Header files
           ├── stack.h
-├── ScientificCalculator_config -> Doxygen Configuration files
 ├── src 	-> Source files 
 │       ├── main.c
 │       ├── stack.c
 └── test
-        ├── include
-                   ├── performops_test.h
-                   ├── postfix_test.h
-```                ├── typeoftoken_test.h
-        ├── src
-                   ├── performops_test.c
-                   ├── postfix_test.c
-                   ├── stack_testing.c
-```                ├── typeoftoken_test.c
+          ├── Test data
+                       └── stack_testing.c
+```
 
 # For Developers
 

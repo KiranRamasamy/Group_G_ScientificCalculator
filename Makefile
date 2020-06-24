@@ -13,6 +13,7 @@ SRCTESTDIR   = test
 OBJDIR       = obj
 BINDIR       = bin
 INCDIR       = include
+INCDIRTEST	 = test/include
 
 
 
@@ -33,7 +34,16 @@ $(OBJDIR)/stack.o: $(SRCDIR)/stack.c $(INCDIR)/stack.h
 	@mkdir -p $(OBJDIR)
 	$(CC) $(CFLAGS) $(SRCDIR)/stack.c $(LIBS)
 
+postfix_test: 
+	$(CC) $(LFLAGS) -o $(BINDIR)/postfix_test  $(SRCTESTDIR)/postfix_test.c  $(LIBS)
+
+typeoftoken_test: 
+	$(CC) $(LFLAGS) -o $(BINDIR)/typeoftoken_test  $(SRCTESTDIR)/typeoftoken_test.c  $(LIBS)	
+
+performops_test: 
+	$(CC) $(LFLAGS) -o $(BINDIR)/performops_test  $(SRCTESTDIR)/performops_test.c  $(LIBS)
+	
 clean:
-	rm -f $(OBJDIR)/*.o $(BINDIR)/calculator $(BINDIR)/stack_testing
+	rm -f $(OBJDIR)/*.o $(BINDIR)/calculator $(BINDIR)/stack_testing $(BINDIR)/postfix_test $(BINDIR)/typeoftoken_test $(BINDIR)/performops_test 
 
 .PHONY: $(BINDIR)/calculator
