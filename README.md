@@ -12,12 +12,12 @@ The purpose of the calculator is to evaluate all lines of expressions from an in
 
 # Installation
 
-Installation steps are mentioned in [install.md](https://github.com/tejaswinitummala/Group_G_ScientificCalculator/blob/dev/install.md)
+Installation steps are mentioned in [install.md](https://github.com/tejaswinitummala/Group_G_ScientificCalculator/blob/master/install.md)
 
 # Usage
 
 To run, you must first install it. Then you can follow instructions mentioned in
-[User_Manual.md](https://github.com/tejaswinitummala/Group_G_ScientificCalculator/blob/dev/doc/user_manual.md).
+[User_Manual.md](https://github.com/tejaswinitummala/Group_G_ScientificCalculator/blob/master/doc/user_manual.md).
 
 # File Structure
 
@@ -54,11 +54,11 @@ The correct file structure (after installing GSL library should be follow and ru
 
 # For Developers
 
-The developer manual is available [here](https://github.com/tejaswinitummala/Group_G_ScientificCalculator/blob/dev/doc/developer_manual.md).
+The developer manual is available [here](https://github.com/tejaswinitummala/Group_G_ScientificCalculator/blob/master/doc/developer_manual.md).
 
 # License
 
-This project is licensed under the GPL 3.0 License - see the [LICENSE.md](https://github.com/tejaswinitummala/Group_G_ScientificCalculator/blob/dev/LICENSE) file for details
+This project is licensed under the GPL 3.0 License - see the [LICENSE.md](https://github.com/tejaswinitummala/Group_G_ScientificCalculator/blob/master/LICENSE) file for details
 
 # Acknowledgements
 
