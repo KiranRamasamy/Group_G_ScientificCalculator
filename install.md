@@ -2,7 +2,7 @@
 
 ## Supported Platforms:
 
-Unix, Cygwin and MacOS.
+Unix, Windows and MacOS.
 
 ## Prerequisite
 
