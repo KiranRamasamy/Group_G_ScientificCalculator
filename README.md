@@ -24,22 +24,32 @@ To run, you must first install it. Then you can follow instructions mentioned in
 The correct file structure (after installing GSL library should be follow and run the binary)
 
 ```
-├── DOCS.md 	-> Usage file
+├── doc    	-> Usage file
            ├── Developer_Manual.md
            ├── User_Manual.md
-├── INSTALL.md 	-> Installation Guide
+├── install.md 	-> Installation Guide
+├── install.sh 	-> Installation script
 ├── LICENSE 	-> License file
 ├── Makefile 	-> Makefile
 ├── README.md 	-> Readme file
-├── bin 	-> Binary directory
+├── bin 	           -> Binary directory
 ├── include 	-> Header files
           ├── stack.h
+├── ScientificCalculator_config.cfg -> Doxygen Configuration files
 ├── src 	-> Source files 
 │       ├── main.c
 │       ├── stack.c
 └── test
-          ├── Test data
-                       └── stack_testing.c
+          ├── include  -> Header files for unit test
+                     ├── performops_test.h
+                     ├── postfix_test.h
+                     ├── typeoftoken_test.h
+          ├── src      -> test data
+                     ├── performops_test.c
+                     ├── postfix_test.c
+                     ├── stack_testing.c
+                     ├── typeoftoken_test.c
+                     
 ```
 
 # For Developers
