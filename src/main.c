@@ -1123,9 +1123,9 @@ int main(int argc, char *argv[])
 	printf("%s",str);
         while(str != NULL && strcmp(str, "quit") != 0)
 	{
-		if (strlen(str) == 0)
+		if (strlen(str) == 0){
 			goto get_new_string;
-		
+		}
 		
 			numTokens = convert_to_tokens(str, &tokens);
 			free(str);
