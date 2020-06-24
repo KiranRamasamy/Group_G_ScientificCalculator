@@ -19,7 +19,7 @@ make
 
 Excutable binary  file will be placed in `bin` directory.
 
-For test cases give 'make stack_test' .
+For test cases give 'make stack_testing' .
 
 For  Postfix test cases give 'make postfix_test' .
 
