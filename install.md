@@ -27,5 +27,5 @@ make performops_test
 make stack_testing 
 
 
-Excutable binary file will be placed in `bin` directory.
+**Excutable binary file will be placed in `bin` directory. **
 
